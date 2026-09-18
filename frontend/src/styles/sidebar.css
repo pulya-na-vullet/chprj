@@ -1,0 +1,102 @@
+/* ===== Сайдбар: прозрачный на холсте; история — верхняя половина,
+   под разделителем — сервисы (Источники, Файлы) ===== */
+.sidebar { flex-shrink: 0; display: flex; flex-direction: column; position: relative;
+  min-width: 220px; max-width: 360px; width: var(--sidebar-w, 264px); }
+.sidebar-collapsed { width: 60px; min-width: 60px; }
+
+.sidebar-head { display: flex; align-items: center; gap: 9px; padding: 16px 16px 12px; }
+.sidebar-mark { width: 22px; height: 22px; border-radius: var(--r-row); flex-shrink: 0; position: relative;
+  background: var(--accent); }
+.sidebar-mark::after { content: ""; position: absolute; left: 5px; right: 5px; bottom: 5px; height: 2.5px;
+  border-radius: var(--r-micro); background: var(--on-dark); }
+.brand { font-weight: 700; font-size: 14px; letter-spacing: -0.01em;
+  flex: 1; white-space: nowrap; overflow: hidden; }
+.sidebar-toggle.sidebar-toggle { color: var(--muted-2); }
+.sidebar-toggle.sidebar-toggle:hover { color: var(--ink); }
+
+/* «Новая задача» — тихий ряд, не карточка */
+.new-chat.new-chat { margin: 2px 10px 8px; justify-content: flex-start;
+  border-color: transparent; background: none; box-shadow: none; font-weight: 500; }
+.new-chat.new-chat:hover { background: var(--card); border-color: var(--ink); box-shadow: none; }
+
+/* история — под навигацией разделов, занимает остаток высоты (T-0053) */
+.conv-list { flex: 1; min-height: 96px; overflow-y: auto; padding: 0 10px; }
+.conv-skeleton-row { height: 28px; border-radius: var(--r-row); margin: 4px 0; }
+.conv-group-label { font-size: 12px; font-weight: 500; color: var(--muted-strong);
+  padding: 12px 8px 5px; }
+.conv-item { display: flex; align-items: center; gap: 8px; padding: 7px 8px; font-size: 13px;
+  color: var(--ink-3); border-radius: var(--r-row); min-width: 0; cursor: pointer; }
+.conv-item:hover { background: var(--card); }
+.conv-item-active { background: var(--card); color: var(--ink); font-weight: 500; }
+.conv-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.conv-delete.conv-delete { opacity: 0; color: var(--faint); }
+.conv-item:hover .conv-delete { opacity: 1; }
+.conv-delete.conv-delete:hover { color: var(--ink); }
+.conv-empty { padding: 10px; color: var(--muted); font-size: 13px; }
+.conv-error { display: flex; flex-direction: column; gap: 6px; padding: 10px; color: var(--warn); font-size: 13px; }
+
+.sidebar-divider { height: 1px; background: var(--line); margin: 8px 16px; }
+.sidebar-nav { display: flex; flex-direction: column; gap: 1px; padding: 8px 10px 0; }
+.nav-item { display: flex; align-items: center; gap: 9px; width: 100%; padding: 8px 9px;
+  border-radius: var(--r-row); font-size: 13px; color: var(--ink-3); cursor: pointer; border: 0;
+  background: none; text-align: left; font-weight: 500; }
+.nav-item:hover { background: var(--card); }
+.nav-item svg { flex-shrink: 0; color: var(--muted); }
+.nav-item-active { background: var(--card); color: var(--ink); }
+.nav-item-active svg { color: var(--ink); }
+
+.sidebar-resizer { position: absolute; top: 50%; right: -2px; transform: translateY(-50%);
+  width: 16px; height: 34px; cursor: col-resize; z-index: 6; display: flex; align-items: center;
+  justify-content: center; }
+.sidebar-grip { width: 3px; height: 24px; border-radius: var(--r-micro); background: var(--line-2); transition: background 0.12s; }
+.sidebar-resizer:hover .sidebar-grip { background: var(--disabled); }
+
+/* collapsed rail */
+.sidebar-collapsed .brand, .sidebar-collapsed .conv-list, .sidebar-collapsed .sidebar-divider,
+.sidebar-collapsed .nav-item span { display: none; }
+.sidebar-collapsed .conv-empty, .sidebar-collapsed .conv-error { display: none; }
+/* свёрнутая рельса: марка и кнопка разворота — в колонку по одной оси */
+.sidebar-collapsed .sidebar-head { flex-direction: column; justify-content: center;
+  gap: 10px; padding: 16px 0 6px; }
+.sidebar-collapsed .new-chat { justify-content: center; padding: 10px; width: 40px; height: 40px; margin: 0 auto 8px; }
+.sidebar-collapsed .sidebar-nav { align-items: center; }
+.sidebar-collapsed .nav-item { justify-content: center; padding: 9px; width: 40px; }
+
+.conv-retry { align-self: flex-start; background: none; border: 1px solid var(--warn); color: var(--warn);
+  border-radius: var(--r-row); padding: 4px 10px; font-size: 12px; cursor: pointer; }
+.conv-retry:hover { background: var(--warn-bg); }
+
+/* Mobile-only: sidebar floats over the chat as a drawer; backdrop blocks the chat. */
+.sidebar-backdrop { display: none; }
+@media (max-width: 760px) {
+  .sidebar { position: fixed; top: 0; bottom: 0; left: 0; width: min(86vw, 320px);
+    z-index: 50; background: var(--canvas); box-shadow: var(--shadow-4); }
+  .sidebar-collapsed { position: static; width: 52px; box-shadow: none; background: none; }
+  .sidebar-backdrop { display: block; position: fixed; inset: 0;
+    background: var(--overlay); z-index: 49; }
+}
+
+/* Сворачивание рейла (E09, T-0060): ширина едет плавно, подписи появляются
+   коротким каскадом после того, как панель раскрылась; иконка-тумблер
+   зеркалится в свёрнутом состоянии. Схлопывание — только ширина: выходную
+   анимацию размонтированным подписям CSS дать не может, и мгновенное
+   исчезновение текста под движущейся кромкой читается чисто. */
+/* Суть эффекта: рейл меняет ширину, основной контент перетекает вместе с ним
+   (запрос клиента, T-0060); transform reflow соседа не даёт. 240ms, по действию. */
+/* impeccable-disable-next-line layout-transition -- утверждено клиентом в E09 */
+.sidebar { transition: width 0.24s cubic-bezier(0.2, 0, 0, 1), min-width 0.24s cubic-bezier(0.2, 0, 0, 1); }
+.sidebar-toggle svg { transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1); }
+.sidebar-collapsed .sidebar-toggle svg { transform: scaleX(-1); }
+.brand, .sidebar-label, .nav-item span, .conv-list, .sidebar-user-email {
+  transition: opacity 0.16s cubic-bezier(0.2, 0, 0, 1) 0.06s, transform 0.16s cubic-bezier(0.2, 0, 0, 1) 0.06s;
+}
+@starting-style {
+  .brand, .sidebar-label, .nav-item span, .conv-list, .sidebar-user-email {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar, .sidebar-toggle svg, .brand, .sidebar-label, .nav-item span, .conv-list,
+  .sidebar-user-email { transition: none; }
+}

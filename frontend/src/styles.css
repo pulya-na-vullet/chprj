@@ -1,0 +1,16 @@
+/* Точка входа стилей чат-приложения: только @import, файл на фичу
+   (см. DESIGN.md «Слои CSS»). Порядок импортов = порядок каскада. */
+@import "./styles/tokens.css";
+@import "./styles/core-theme.css";
+@import "./styles/sources.css";
+@import "./styles/files.css";
+@import "./styles/templates.css";
+@import "./styles/base.css";
+@import "./styles/sidebar.css";
+@import "./styles/chat.css";
+@import "./styles/composer.css";
+@import "./styles/review-panel.css";
+@import "./styles/reviews.css";
+@import "./styles/auth.css";
+@import "./styles/onboarding.css";
+@import "./styles/tour.css";

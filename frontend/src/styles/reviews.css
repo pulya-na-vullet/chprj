@@ -1,0 +1,116 @@
+/* Раздел «Проверки» (T-0048): окно наследует язык «Файлов» (files-win /
+   files-bar / files-ask / files-table / files-panel из files.css) — здесь
+   только собственная сетка таблицы и ячейки (макет reviews-section.html). */
+
+.rvs-thead,
+.rvs-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.2fr) minmax(200px, 1.4fr) 170px 120px;
+  gap: 14px;
+  align-items: center;
+  padding: 10px;
+}
+.rvs-thead {
+  font-size: 11px;
+  color: var(--faint);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.rvs-row {
+  border-bottom: 1px solid var(--line-soft);
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+.rvs-row:hover { background: var(--hover-2); }
+.rvs-row[aria-disabled="true"] { cursor: default; }
+.rvs-row:focus-visible { outline: 1.5px solid var(--ink); outline-offset: -1.5px; }
+
+.rvs-pb {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.rvs-pb small {
+  display: block;
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--muted-strong);
+  margin-top: 1px;
+}
+
+.rvs-doccell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.rvs-docname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.rvs-counts { display: flex; gap: 10px; align-items: center; }
+.rvs-lvl {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.rvs-cell-note { font-size: 12px; color: var(--muted-strong); }
+.rvs-date {
+  font-size: 13px;
+  color: var(--muted-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Живой прогресс строки (прогон, запущенный в этой сессии). */
+.rvs-run { font-size: 12px; color: var(--ink-3); }
+.rvs-run::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-right: 6px;
+}
+
+/* Диалог «Новая проверка» (nrd-*). */
+.nrd { display: flex; flex-direction: column; gap: 18px; }
+.nrd-sec { display: flex; flex-direction: column; gap: 8px; }
+.nrd-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.nrd-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 180px;
+  overflow: auto;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-panel);
+}
+.nrd-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--line-soft);
+}
+.nrd-row:last-child { border-bottom: none; }
+.nrd-row:hover { background: var(--hover-2); }
+.nrd-row:has(input:disabled) { cursor: default; color: var(--muted-strong); }
+.nrd-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+.nrd-note { font-size: 12px; color: var(--muted-strong); }
+.nrd-error { font-size: 13px; color: var(--danger); margin: 4px 0; }
+.rvp-ask-picked { border-color: var(--ink); background: var(--hover-2); }

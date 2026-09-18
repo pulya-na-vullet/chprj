@@ -1,0 +1,129 @@
+# Гейт качества для выкатки. Ничего нового не проверяет: backend повторяет
+# `make check` плюс интеграционные тесты с моками (им не нужны ни БД, ни сеть),
+# frontend — те же две сборки, что делает Dockerfile, вместе с `tsc --noEmit`.
+# Смысл в том, что теперь их нельзя забыть.
+#
+# На зелёном прогоне тега джоба mark пушит метку refs/ci-passed/<sha>, по
+# которой боевой сервер решает, пускать ли выкатку (deploy/ci_gate.py).
+# Джоба deploy по SSH запускает тот же deploy.sh, что и `make deploy`:
+# образ собирается на VM, реестра нет. Секреты: DEPLOY_HOST, DEPLOY_USER,
+# DEPLOY_SSH_KEY (см. deploy/CD.md).
+name: ci
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # Прогон на теге отменять нельзя: без него не появится метка и релиз
+  # заблокируется без причины.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          # Та же версия, что в Dockerfile: uv.lock (revision 3) должен
+          # читаться одинаково в CI, в образе и у разработчика.
+          version: "0.11.14"
+          enable-cache: true
+      - run: uv sync --frozen
+      - run: uv run ruff check src tests deploy
+      - run: uv run ruff format --check src tests deploy
+      - run: uv run mypy src deploy
+      - run: uv run pytest tests/unit -q
+      - run: uv run pytest tests/integration -m api_with_mocks -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    env:
+      # devDep impeccable тянет puppeteer с install-скриптом (~150 МБ Chrome).
+      # Та же переменная стоит в Dockerfile.
+      PUPPETEER_SKIP_DOWNLOAD: "1"
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - run: npm run build:admin
+
+  mark:
+    # Метка — единственное, ради чего у прогона есть право на запись.
+    # Она не тег: git describe --tags на сервере её не видит.
+    needs: [backend, frontend]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - run: git push origin "${GITHUB_SHA}:refs/ci-passed/${GITHUB_SHA}"
+
+  deploy:
+    # Автовыкатка: после метки CI Actions заходит на VM и гоняет deploy.sh.
+    # Образ по-прежнему собирается на сервере — github-hosted runner в РФ-сеть
+    # Docker Hub/ghcr не таскает. Секреты не зашиты в репо.
+    needs: [mark]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    concurrency:
+      group: production-deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require deploy secrets
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          missing=0
+          [ -n "${DEPLOY_HOST}" ] || { echo "::error::Задайте repository secret DEPLOY_HOST (IP или hostname VM)"; missing=1; }
+          [ -n "${DEPLOY_USER}" ] || { echo "::error::Задайте repository secret DEPLOY_USER (ssh-пользователь на VM)"; missing=1; }
+          [ -n "${DEPLOY_SSH_KEY}" ] || { echo "::error::Задайте repository secret DEPLOY_SSH_KEY (приватный ключ)"; missing=1; }
+          exit "${missing}"
+      - name: Deploy over SSH
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          mkdir -p "${HOME}/.ssh"
+          chmod 700 "${HOME}/.ssh"
+          key="${HOME}/.ssh/deploy_key"
+          umask 077
+          printf '%s\n' "${DEPLOY_SSH_KEY}" | tr -d '\r' > "${key}"
+          chmod 600 "${key}"
+          port="${DEPLOY_PORT:-22}"
+          ssh -i "${key}" \
+            -p "${port}" \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=accept-new \
+            -o ServerAliveInterval=15 \
+            -o ServerAliveCountMax=8 \
+            "${DEPLOY_USER}@${DEPLOY_HOST}" \
+            "TAG='${TAG}' REPO='${REPO}' bash -s" \
+            < deploy/github_remote.sh

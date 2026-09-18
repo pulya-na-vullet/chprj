@@ -1,0 +1,3043 @@
+{
+  "components": {
+    "schemas": {
+      "ActSummary": {
+        "properties": {
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "short_name": {
+            "title": "Short Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "short_name",
+          "full_name",
+          "kind"
+        ],
+        "title": "ActSummary",
+        "type": "object"
+      },
+      "ActsResponse": {
+        "properties": {
+          "acts": {
+            "items": {
+              "$ref": "#/components/schemas/ActSummary"
+            },
+            "title": "Acts",
+            "type": "array"
+          }
+        },
+        "required": [
+          "acts"
+        ],
+        "title": "ActsResponse",
+        "type": "object"
+      },
+      "AdminArticleDetail": {
+        "properties": {
+          "act_short_name": {
+            "title": "Act Short Name",
+            "type": "string"
+          },
+          "article_id": {
+            "format": "uuid",
+            "title": "Article Id",
+            "type": "string"
+          },
+          "chunks": {
+            "items": {
+              "$ref": "#/components/schemas/AdminChunkOut"
+            },
+            "title": "Chunks",
+            "type": "array"
+          },
+          "full_text": {
+            "title": "Full Text",
+            "type": "string"
+          },
+          "number": {
+            "title": "Number",
+            "type": "string"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "article_id",
+          "act_short_name",
+          "number",
+          "full_text",
+          "chunks"
+        ],
+        "title": "AdminArticleDetail",
+        "type": "object"
+      },
+      "AdminArticleListItem": {
+        "properties": {
+          "article_id": {
+            "format": "uuid",
+            "title": "Article Id",
+            "type": "string"
+          },
+          "chunks_count": {
+            "title": "Chunks Count",
+            "type": "integer"
+          },
+          "number": {
+            "title": "Number",
+            "type": "string"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "article_id",
+          "number",
+          "chunks_count"
+        ],
+        "title": "AdminArticleListItem",
+        "type": "object"
+      },
+      "AdminArticlesResponse": {
+        "properties": {
+          "articles": {
+            "items": {
+              "$ref": "#/components/schemas/AdminArticleListItem"
+            },
+            "title": "Articles",
+            "type": "array"
+          }
+        },
+        "required": [
+          "articles"
+        ],
+        "title": "AdminArticlesResponse",
+        "type": "object"
+      },
+      "AdminChunkOut": {
+        "properties": {
+          "chunk_id": {
+            "format": "uuid",
+            "title": "Chunk Id",
+            "type": "string"
+          },
+          "ordinal": {
+            "title": "Ordinal",
+            "type": "integer"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "chunk_id",
+          "path",
+          "text",
+          "ordinal"
+        ],
+        "title": "AdminChunkOut",
+        "type": "object"
+      },
+      "AdminDocument": {
+        "properties": {
+          "articles_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Articles Count"
+          },
+          "chunks_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chunks Count"
+          },
+          "code_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code Id"
+          },
+          "file_exists": {
+            "default": false,
+            "title": "File Exists",
+            "type": "boolean"
+          },
+          "file_mtime": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File Mtime"
+          },
+          "file_path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File Path"
+          },
+          "file_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "File Size"
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "ingested_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ingested At"
+          },
+          "kind": {
+            "enum": [
+              "codex",
+              "federal_law"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "short_name": {
+            "title": "Short Name",
+            "type": "string"
+          },
+          "source_doc_id": {
+            "title": "Source Doc Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "not_ingested",
+              "ingested",
+              "stale",
+              "ingesting",
+              "orphaned"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code_id",
+          "source_doc_id",
+          "short_name",
+          "full_name",
+          "kind",
+          "status"
+        ],
+        "title": "AdminDocument",
+        "type": "object"
+      },
+      "AdminDocumentsResponse": {
+        "properties": {
+          "db_size_bytes": {
+            "title": "Db Size Bytes",
+            "type": "integer"
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/AdminDocument"
+            },
+            "title": "Documents",
+            "type": "array"
+          },
+          "total_chunks": {
+            "title": "Total Chunks",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "documents",
+          "total_chunks",
+          "db_size_bytes"
+        ],
+        "title": "AdminDocumentsResponse",
+        "type": "object"
+      },
+      "AdminTemplateOut": {
+        "description": "Operator view: full field list and status, drafts included.",
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "description": {
+            "title": "Description",
+            "type": "string"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/TemplateField"
+            },
+            "title": "Fields",
+            "type": "array"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "draft",
+              "published"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "slug",
+          "title",
+          "category",
+          "description",
+          "status",
+          "fields",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "AdminTemplateOut",
+        "type": "object"
+      },
+      "AdminTemplatePatchRequest": {
+        "description": "Partial update: absent field means \"leave unchanged\". ``fields``\nreplaces the whole list — this is how the operator refines label/hint/kind\nand drops orphaned entries after a file replace.",
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "fields": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TemplateField"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fields"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "draft",
+                  "published"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "title": "AdminTemplatePatchRequest",
+        "type": "object"
+      },
+      "AdminTemplatesResponse": {
+        "properties": {
+          "templates": {
+            "items": {
+              "$ref": "#/components/schemas/AdminTemplateOut"
+            },
+            "title": "Templates",
+            "type": "array"
+          }
+        },
+        "required": [
+          "templates"
+        ],
+        "title": "AdminTemplatesResponse",
+        "type": "object"
+      },
+      "AdminUserOut": {
+        "properties": {
+          "conversation_count": {
+            "title": "Conversation Count",
+            "type": "integer"
+          },
+          "created_at": {
+            "format": "date-time",
+            "title": "Created At",
+            "type": "string"
+          },
+          "email": {
+            "title": "Email",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "is_active": {
+            "title": "Is Active",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "email",
+          "is_active",
+          "created_at",
+          "conversation_count"
+        ],
+        "title": "AdminUserOut",
+        "type": "object"
+      },
+      "AdminUserPatchRequest": {
+        "properties": {
+          "is_active": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Is Active"
+          },
+          "new_password": {
+            "anyOf": [
+              {
+                "minLength": 8,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Password"
+          }
+        },
+        "title": "AdminUserPatchRequest",
+        "type": "object"
+      },
+      "AdminUsersResponse": {
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/AdminUserOut"
+            },
+            "title": "Users",
+            "type": "array"
+          }
+        },
+        "required": [
+          "users"
+        ],
+        "title": "AdminUsersResponse",
+        "type": "object"
+      },
+      "AgentPromptDefaults": {
+        "description": "Built-in default system prompts, shown to the operator as placeholders.",
+        "properties": {
+          "system_prompt_legal": {
+            "title": "System Prompt Legal",
+            "type": "string"
+          },
+          "system_prompt_text": {
+            "title": "System Prompt Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "system_prompt_legal",
+          "system_prompt_text"
+        ],
+        "title": "AgentPromptDefaults",
+        "type": "object"
+      },
+      "AgentSettings": {
+        "properties": {
+          "behavior": {
+            "$ref": "#/components/schemas/BehaviorSettings",
+            "default": {
+              "max_tool_iterations": 8,
+              "tool_choice": "auto"
+            }
+          },
+          "generation": {
+            "$ref": "#/components/schemas/GenerationSettings",
+            "default": {}
+          },
+          "model": {
+            "default": "qwen/qwen3.6-flash",
+            "title": "Model",
+            "type": "string"
+          },
+          "review": {
+            "$ref": "#/components/schemas/ReviewSettings",
+            "default": {}
+          },
+          "tools": {
+            "$ref": "#/components/schemas/ToolsSettings",
+            "default": {
+              "date_calculator": {
+                "enabled": true
+              },
+              "fetch_article": {
+                "enabled": true
+              },
+              "list_acts": {
+                "enabled": true
+              },
+              "rag_search": {
+                "enabled": true,
+                "limit": 8,
+                "min_score": 0.0
+              },
+              "web_fetch": {
+                "enabled": false,
+                "max_chars": 20000
+              },
+              "web_search": {
+                "enabled": false,
+                "max_results": 5
+              }
+            }
+          }
+        },
+        "title": "AgentSettings",
+        "type": "object"
+      },
+      "BehaviorSettings": {
+        "properties": {
+          "history_window": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "History Window"
+          },
+          "max_tool_iterations": {
+            "default": 8,
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Max Tool Iterations",
+            "type": "integer"
+          },
+          "system_prompt_legal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "System Prompt Legal"
+          },
+          "system_prompt_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "System Prompt Text"
+          },
+          "tool_choice": {
+            "default": "auto",
+            "enum": [
+              "auto",
+              "required",
+              "none"
+            ],
+            "title": "Tool Choice",
+            "type": "string"
+          }
+        },
+        "title": "BehaviorSettings",
+        "type": "object"
+      },
+      "Body_create_template_admin_templates_post": {
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "description": {
+            "default": "",
+            "title": "Description",
+            "type": "string"
+          },
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "type": "string"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "slug",
+          "title",
+          "category"
+        ],
+        "title": "Body_create_template_admin_templates_post",
+        "type": "object"
+      },
+      "Body_replace_template_file_admin_templates__slug__file_put": {
+        "properties": {
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file"
+        ],
+        "title": "Body_replace_template_file_admin_templates__slug__file_put",
+        "type": "object"
+      },
+      "Body_upload_document_admin_documents_post": {
+        "properties": {
+          "code_id": {
+            "minLength": 1,
+            "title": "Code Id",
+            "type": "string"
+          },
+          "file": {
+            "contentMediaType": "application/octet-stream",
+            "title": "File",
+            "type": "string"
+          },
+          "full_name": {
+            "minLength": 1,
+            "title": "Full Name",
+            "type": "string"
+          },
+          "ingest_now": {
+            "default": false,
+            "title": "Ingest Now",
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "codex",
+              "federal_law"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "short_name": {
+            "minLength": 1,
+            "title": "Short Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "file",
+          "code_id",
+          "short_name",
+          "full_name",
+          "kind"
+        ],
+        "title": "Body_upload_document_admin_documents_post",
+        "type": "object"
+      },
+      "DateCalcSettings": {
+        "properties": {
+          "enabled": {
+            "default": true,
+            "title": "Enabled",
+            "type": "boolean"
+          }
+        },
+        "title": "DateCalcSettings",
+        "type": "object"
+      },
+      "DeleteDocumentRequest": {
+        "properties": {
+          "drop_file": {
+            "default": false,
+            "title": "Drop File",
+            "type": "boolean"
+          },
+          "drop_manifest": {
+            "default": false,
+            "title": "Drop Manifest",
+            "type": "boolean"
+          }
+        },
+        "title": "DeleteDocumentRequest",
+        "type": "object"
+      },
+      "EmbedRequest": {
+        "properties": {
+          "texts": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 128,
+            "minItems": 1,
+            "title": "Texts",
+            "type": "array"
+          }
+        },
+        "required": [
+          "texts"
+        ],
+        "title": "EmbedRequest",
+        "type": "object"
+      },
+      "EmbedResponse": {
+        "properties": {
+          "vectors": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            "title": "Vectors",
+            "type": "array"
+          }
+        },
+        "required": [
+          "vectors"
+        ],
+        "title": "EmbedResponse",
+        "type": "object"
+      },
+      "FetchArticleSettings": {
+        "properties": {
+          "enabled": {
+            "default": true,
+            "title": "Enabled",
+            "type": "boolean"
+          }
+        },
+        "title": "FetchArticleSettings",
+        "type": "object"
+      },
+      "GenerationSettings": {
+        "properties": {
+          "frequency_penalty": {
+            "anyOf": [
+              {
+                "maximum": 2.0,
+                "minimum": -2.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Frequency Penalty"
+          },
+          "max_tokens": {
+            "anyOf": [
+              {
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Tokens"
+          },
+          "presence_penalty": {
+            "anyOf": [
+              {
+                "maximum": 2.0,
+                "minimum": -2.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Presence Penalty"
+          },
+          "reasoning_effort": {
+            "anyOf": [
+              {
+                "enum": [
+                  "none",
+                  "minimal",
+                  "low",
+                  "medium",
+                  "high",
+                  "xhigh"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reasoning Effort"
+          },
+          "seed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seed"
+          },
+          "temperature": {
+            "anyOf": [
+              {
+                "maximum": 2.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Temperature"
+          },
+          "top_k": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Top K"
+          },
+          "top_p": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Top P"
+          }
+        },
+        "title": "GenerationSettings",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "IndexesStatusResponse": {
+        "properties": {
+          "gin": {
+            "title": "Gin",
+            "type": "boolean"
+          },
+          "hnsw": {
+            "title": "Hnsw",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "hnsw",
+          "gin"
+        ],
+        "title": "IndexesStatusResponse",
+        "type": "object"
+      },
+      "IngestAccepted": {
+        "properties": {
+          "job_id": {
+            "title": "Job Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "job_id"
+        ],
+        "title": "IngestAccepted",
+        "type": "object"
+      },
+      "IngestRequest": {
+        "properties": {
+          "code_id": {
+            "minLength": 1,
+            "title": "Code Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code_id"
+        ],
+        "title": "IngestRequest",
+        "type": "object"
+      },
+      "JobOut": {
+        "properties": {
+          "articles_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Articles Count"
+          },
+          "chunks_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chunks Count"
+          },
+          "code_id": {
+            "title": "Code Id",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "progress_done": {
+            "title": "Progress Done",
+            "type": "integer"
+          },
+          "progress_total": {
+            "title": "Progress Total",
+            "type": "integer"
+          },
+          "stage": {
+            "enum": [
+              "starting",
+              "acquiring",
+              "parsing",
+              "chunking",
+              "embedding",
+              "persisting",
+              "indexing"
+            ],
+            "title": "Stage",
+            "type": "string"
+          },
+          "started_at": {
+            "format": "date-time",
+            "title": "Started At",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "running",
+              "succeeded",
+              "failed",
+              "cancelled"
+            ],
+            "title": "State",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "code_id",
+          "state",
+          "stage",
+          "progress_done",
+          "progress_total",
+          "started_at"
+        ],
+        "title": "JobOut",
+        "type": "object"
+      },
+      "JobsResponse": {
+        "properties": {
+          "jobs": {
+            "items": {
+              "$ref": "#/components/schemas/JobOut"
+            },
+            "title": "Jobs",
+            "type": "array"
+          }
+        },
+        "required": [
+          "jobs"
+        ],
+        "title": "JobsResponse",
+        "type": "object"
+      },
+      "ListActsSettings": {
+        "properties": {
+          "enabled": {
+            "default": true,
+            "title": "Enabled",
+            "type": "boolean"
+          }
+        },
+        "title": "ListActsSettings",
+        "type": "object"
+      },
+      "ManifestUpdateRequest": {
+        "properties": {
+          "docx_path": {
+            "minLength": 1,
+            "title": "Docx Path",
+            "type": "string"
+          },
+          "full_name": {
+            "minLength": 1,
+            "title": "Full Name",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "codex",
+              "federal_law"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "short_name": {
+            "minLength": 1,
+            "title": "Short Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "short_name",
+          "full_name",
+          "kind",
+          "docx_path"
+        ],
+        "title": "ManifestUpdateRequest",
+        "type": "object"
+      },
+      "OkResponse": {
+        "properties": {
+          "status": {
+            "const": "ok",
+            "default": "ok",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "title": "OkResponse",
+        "type": "object"
+      },
+      "OpenRouterModel": {
+        "properties": {
+          "completion_price": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completion Price"
+          },
+          "context_length": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context Length"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "prompt_price": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Prompt Price"
+          },
+          "supports_tools": {
+            "default": false,
+            "title": "Supports Tools",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "OpenRouterModel",
+        "type": "object"
+      },
+      "OpenRouterModelsResponse": {
+        "properties": {
+          "models": {
+            "items": {
+              "$ref": "#/components/schemas/OpenRouterModel"
+            },
+            "title": "Models",
+            "type": "array"
+          }
+        },
+        "required": [
+          "models"
+        ],
+        "title": "OpenRouterModelsResponse",
+        "type": "object"
+      },
+      "RagSearchSettings": {
+        "properties": {
+          "enabled": {
+            "default": true,
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "limit": {
+            "default": 8,
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "min_score": {
+            "default": 0.0,
+            "minimum": 0.0,
+            "title": "Min Score",
+            "type": "number"
+          }
+        },
+        "title": "RagSearchSettings",
+        "type": "object"
+      },
+      "RetrieveRequest": {
+        "properties": {
+          "acts": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acts"
+          },
+          "limit": {
+            "default": 8,
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Limit",
+            "type": "integer"
+          },
+          "min_score": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Min Score"
+          },
+          "query_text": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Query Text",
+            "type": "string"
+          },
+          "query_vector": {
+            "items": {
+              "type": "number"
+            },
+            "maxItems": 1024,
+            "minItems": 1024,
+            "title": "Query Vector",
+            "type": "array"
+          }
+        },
+        "required": [
+          "query_text",
+          "query_vector"
+        ],
+        "title": "RetrieveRequest",
+        "type": "object"
+      },
+      "ReviewSettings": {
+        "description": "Contract-review pipeline overrides. None = not set (fall through to\nenv / built-in default, see agent/api/deps.py).",
+        "properties": {
+          "concurrency": {
+            "anyOf": [
+              {
+                "maximum": 12.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Concurrency"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          }
+        },
+        "title": "ReviewSettings",
+        "type": "object"
+      },
+      "SearchResponse": {
+        "properties": {
+          "articles": {
+            "items": {
+              "$ref": "#/components/schemas/SearchedArticle"
+            },
+            "title": "Articles",
+            "type": "array"
+          }
+        },
+        "required": [
+          "articles"
+        ],
+        "title": "SearchResponse",
+        "type": "object"
+      },
+      "SearchedArticle": {
+        "properties": {
+          "act_kind": {
+            "enum": [
+              "codex",
+              "federal_law"
+            ],
+            "title": "Act Kind",
+            "type": "string"
+          },
+          "act_short_name": {
+            "title": "Act Short Name",
+            "type": "string"
+          },
+          "article_id": {
+            "format": "uuid",
+            "title": "Article Id",
+            "type": "string"
+          },
+          "full_text": {
+            "title": "Full Text",
+            "type": "string"
+          },
+          "matched_chunks": {
+            "items": {
+              "$ref": "#/components/schemas/SearchedChunk"
+            },
+            "title": "Matched Chunks",
+            "type": "array"
+          },
+          "number": {
+            "title": "Number",
+            "type": "string"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "article_id",
+          "act_short_name",
+          "act_kind",
+          "number",
+          "full_text",
+          "matched_chunks",
+          "score"
+        ],
+        "title": "SearchedArticle",
+        "type": "object"
+      },
+      "SearchedChunk": {
+        "properties": {
+          "chunk_id": {
+            "format": "uuid",
+            "title": "Chunk Id",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "score": {
+            "title": "Score",
+            "type": "number"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "chunk_id",
+          "path",
+          "text",
+          "score"
+        ],
+        "title": "SearchedChunk",
+        "type": "object"
+      },
+      "SourceArticleDetail": {
+        "properties": {
+          "act_short_name": {
+            "title": "Act Short Name",
+            "type": "string"
+          },
+          "article_id": {
+            "format": "uuid",
+            "title": "Article Id",
+            "type": "string"
+          },
+          "full_text": {
+            "title": "Full Text",
+            "type": "string"
+          },
+          "number": {
+            "title": "Number",
+            "type": "string"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "article_id",
+          "act_short_name",
+          "number",
+          "full_text"
+        ],
+        "title": "SourceArticleDetail",
+        "type": "object"
+      },
+      "SourceArticleListItem": {
+        "properties": {
+          "article_id": {
+            "format": "uuid",
+            "title": "Article Id",
+            "type": "string"
+          },
+          "number": {
+            "title": "Number",
+            "type": "string"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          }
+        },
+        "required": [
+          "article_id",
+          "number"
+        ],
+        "title": "SourceArticleListItem",
+        "type": "object"
+      },
+      "SourceArticlesResponse": {
+        "properties": {
+          "articles": {
+            "items": {
+              "$ref": "#/components/schemas/SourceArticleListItem"
+            },
+            "title": "Articles",
+            "type": "array"
+          },
+          "short_name": {
+            "title": "Short Name",
+            "type": "string"
+          },
+          "source_doc_id": {
+            "title": "Source Doc Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_doc_id",
+          "short_name",
+          "articles"
+        ],
+        "title": "SourceArticlesResponse",
+        "type": "object"
+      },
+      "SourceSummary": {
+        "properties": {
+          "branch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Branch"
+          },
+          "full_name": {
+            "title": "Full Name",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "redaction": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Redaction"
+          },
+          "short_name": {
+            "title": "Short Name",
+            "type": "string"
+          },
+          "source_doc_id": {
+            "title": "Source Doc Id",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "in_corpus",
+              "planned"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_doc_id",
+          "short_name",
+          "full_name",
+          "kind",
+          "branch",
+          "redaction",
+          "status"
+        ],
+        "title": "SourceSummary",
+        "type": "object"
+      },
+      "SourcesResponse": {
+        "properties": {
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceSummary"
+            },
+            "title": "Sources",
+            "type": "array"
+          }
+        },
+        "required": [
+          "sources"
+        ],
+        "title": "SourcesResponse",
+        "type": "object"
+      },
+      "TemplateField": {
+        "description": "One ``{{ placeholder }}`` of a .docx template with operator metadata.\n\nA fresh scan yields ``label = name`` / ``kind = text`` / ``required = True``;\nthe operator refines label/hint/kind by hand (they drive the questions the\nagent asks).",
+        "properties": {
+          "hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hint"
+          },
+          "kind": {
+            "default": "text",
+            "enum": [
+              "text",
+              "date",
+              "money",
+              "number"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "required": {
+            "default": true,
+            "title": "Required",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name",
+          "label"
+        ],
+        "title": "TemplateField",
+        "type": "object"
+      },
+      "TemplateFileReplaceResponse": {
+        "description": "Re-scan outcome of ``PUT /admin/templates/{slug}/file``: new placeholder\nnames got default fields, disappeared ones stay in ``fields`` but are\nreported as ``orphaned`` so the admin UI can offer to drop them.",
+        "properties": {
+          "added": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Added",
+            "type": "array"
+          },
+          "orphaned": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Orphaned",
+            "type": "array"
+          },
+          "template": {
+            "$ref": "#/components/schemas/AdminTemplateOut"
+          }
+        },
+        "required": [
+          "template",
+          "added",
+          "orphaned"
+        ],
+        "title": "TemplateFileReplaceResponse",
+        "type": "object"
+      },
+      "ToolsSettings": {
+        "properties": {
+          "date_calculator": {
+            "$ref": "#/components/schemas/DateCalcSettings",
+            "default": {
+              "enabled": true
+            }
+          },
+          "fetch_article": {
+            "$ref": "#/components/schemas/FetchArticleSettings",
+            "default": {
+              "enabled": true
+            }
+          },
+          "list_acts": {
+            "$ref": "#/components/schemas/ListActsSettings",
+            "default": {
+              "enabled": true
+            }
+          },
+          "rag_search": {
+            "$ref": "#/components/schemas/RagSearchSettings",
+            "default": {
+              "enabled": true,
+              "limit": 8,
+              "min_score": 0.0
+            }
+          },
+          "web_fetch": {
+            "$ref": "#/components/schemas/WebFetchSettings",
+            "default": {
+              "enabled": false,
+              "max_chars": 20000
+            }
+          },
+          "web_search": {
+            "$ref": "#/components/schemas/WebSearchSettings",
+            "default": {
+              "enabled": false,
+              "max_results": 5
+            }
+          }
+        },
+        "title": "ToolsSettings",
+        "type": "object"
+      },
+      "UploadDocumentResponse": {
+        "properties": {
+          "code_id": {
+            "title": "Code Id",
+            "type": "string"
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Id"
+          }
+        },
+        "required": [
+          "code_id"
+        ],
+        "title": "UploadDocumentResponse",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "WebFetchSettings": {
+        "properties": {
+          "enabled": {
+            "default": false,
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "max_chars": {
+            "default": 20000,
+            "maximum": 100000.0,
+            "minimum": 1000.0,
+            "title": "Max Chars",
+            "type": "integer"
+          }
+        },
+        "title": "WebFetchSettings",
+        "type": "object"
+      },
+      "WebSearchSettings": {
+        "properties": {
+          "enabled": {
+            "default": false,
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "max_results": {
+            "default": 5,
+            "maximum": 20.0,
+            "minimum": 1.0,
+            "title": "Max Results",
+            "type": "integer"
+          }
+        },
+        "title": "WebSearchSettings",
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "title": "Neurolegal RAG",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/acts": {
+      "get": {
+        "operationId": "acts_acts_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Acts"
+      }
+    },
+    "/admin/agent/defaults": {
+      "get": {
+        "operationId": "get_defaults_admin_agent_defaults_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentPromptDefaults"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Defaults"
+      }
+    },
+    "/admin/agent/models": {
+      "get": {
+        "operationId": "get_models_admin_agent_models_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OpenRouterModelsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Models"
+      }
+    },
+    "/admin/agent/settings": {
+      "get": {
+        "operationId": "get_settings_admin_agent_settings_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentSettings"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Get Settings"
+      },
+      "put": {
+        "operationId": "put_settings_admin_agent_settings_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentSettings"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Put Settings"
+      }
+    },
+    "/admin/articles/{article_id}": {
+      "get": {
+        "operationId": "article_admin_articles__article_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "article_id",
+            "required": true,
+            "schema": {
+              "title": "Article Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminArticleDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Article"
+      }
+    },
+    "/admin/documents": {
+      "get": {
+        "operationId": "documents_admin_documents_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminDocumentsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Documents"
+      },
+      "post": {
+        "operationId": "upload_document_admin_documents_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_document_admin_documents_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UploadDocumentResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Upload Document"
+      }
+    },
+    "/admin/documents/{code_id}": {
+      "delete": {
+        "operationId": "delete_document_admin_documents__code_id__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code_id",
+            "required": true,
+            "schema": {
+              "title": "Code Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/DeleteDocumentRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Req"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Document"
+      }
+    },
+    "/admin/documents/{code_id}/articles": {
+      "get": {
+        "operationId": "document_articles_admin_documents__code_id__articles_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code_id",
+            "required": true,
+            "schema": {
+              "title": "Code Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminArticlesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Document Articles"
+      }
+    },
+    "/admin/documents/{code_id}/manifest": {
+      "put": {
+        "operationId": "update_manifest_admin_documents__code_id__manifest_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code_id",
+            "required": true,
+            "schema": {
+              "title": "Code Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManifestUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Update Manifest"
+      }
+    },
+    "/admin/indexes": {
+      "get": {
+        "operationId": "indexes_status_admin_indexes_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexesStatusResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Indexes Status"
+      }
+    },
+    "/admin/ingest": {
+      "post": {
+        "operationId": "start_ingest_admin_ingest_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IngestRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IngestAccepted"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Start Ingest"
+      }
+    },
+    "/admin/jobs": {
+      "get": {
+        "operationId": "jobs_list_admin_jobs_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobsResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Jobs List"
+      }
+    },
+    "/admin/jobs/{job_id}": {
+      "get": {
+        "operationId": "job_get_admin_jobs__job_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Job Get"
+      }
+    },
+    "/admin/jobs/{job_id}/cancel": {
+      "post": {
+        "operationId": "job_cancel_admin_jobs__job_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OkResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Job Cancel"
+      }
+    },
+    "/admin/templates": {
+      "get": {
+        "operationId": "list_templates_admin_templates_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminTemplatesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Templates",
+        "tags": [
+          "admin-templates"
+        ]
+      },
+      "post": {
+        "operationId": "create_template_admin_templates_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_template_admin_templates_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminTemplateOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Create Template",
+        "tags": [
+          "admin-templates"
+        ]
+      }
+    },
+    "/admin/templates/{slug}": {
+      "delete": {
+        "operationId": "delete_template_admin_templates__slug__delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Delete Template",
+        "tags": [
+          "admin-templates"
+        ]
+      },
+      "patch": {
+        "operationId": "patch_template_admin_templates__slug__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminTemplatePatchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminTemplateOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patch Template",
+        "tags": [
+          "admin-templates"
+        ]
+      }
+    },
+    "/admin/templates/{slug}/file": {
+      "get": {
+        "operationId": "download_template_file_admin_templates__slug__file_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Download Template File",
+        "tags": [
+          "admin-templates"
+        ]
+      },
+      "put": {
+        "operationId": "replace_template_file_admin_templates__slug__file_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "title": "Slug",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_replace_template_file_admin_templates__slug__file_put"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TemplateFileReplaceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Replace Template File",
+        "tags": [
+          "admin-templates"
+        ]
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "operationId": "list_users_admin_users_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUsersResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "List Users",
+        "tags": [
+          "admin-users"
+        ]
+      }
+    },
+    "/admin/users/{user_id}": {
+      "patch": {
+        "operationId": "patch_user_admin_users__user_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "schema": {
+              "title": "User Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminUserPatchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminUserOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Patch User",
+        "tags": [
+          "admin-users"
+        ]
+      }
+    },
+    "/article": {
+      "get": {
+        "operationId": "article_article_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "act",
+            "required": true,
+            "schema": {
+              "minLength": 1,
+              "title": "Act",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "number",
+            "required": true,
+            "schema": {
+              "minLength": 1,
+              "title": "Number",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Article"
+      }
+    },
+    "/embed": {
+      "post": {
+        "operationId": "embed_embed_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmbedRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EmbedResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Embed"
+      }
+    },
+    "/healthz": {
+      "get": {
+        "operationId": "healthz_healthz_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Healthz Healthz Get",
+                  "type": "object"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Healthz"
+      }
+    },
+    "/metrics": {
+      "get": {
+        "operationId": "metrics_metrics_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Metrics"
+      }
+    },
+    "/retrieve": {
+      "post": {
+        "operationId": "retrieve_retrieve_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RetrieveRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Retrieve"
+      }
+    },
+    "/search": {
+      "get": {
+        "operationId": "search_search_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "maxLength": 500,
+              "minLength": 1,
+              "title": "Q",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "acts",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Acts"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 8,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "min_score",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "minimum": 0.0,
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Min Score"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Search"
+      }
+    },
+    "/sources": {
+      "get": {
+        "operationId": "sources_sources_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourcesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Sources"
+      }
+    },
+    "/sources/articles/{article_id}": {
+      "get": {
+        "operationId": "article_sources_articles__article_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "article_id",
+            "required": true,
+            "schema": {
+              "title": "Article Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceArticleDetail"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Article"
+      }
+    },
+    "/sources/{source_doc_id}/articles": {
+      "get": {
+        "operationId": "source_articles_sources__source_doc_id__articles_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "source_doc_id",
+            "required": true,
+            "schema": {
+              "title": "Source Doc Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceArticlesResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Source Articles"
+      }
+    }
+  }
+}

@@ -1,0 +1,146 @@
+# ─── Secrets & environment ────────────────────────────────────────────────
+# Everything .env* stays local; only the example template is versioned.
+.env
+.env.*
+!.env.example
+!.env.prod.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+id_rsa*
+*credentials*.json
+service-account*.json
+
+# ─── Local runtime state & data ───────────────────────────────────────────
+# data/ holds only machine-local state: raw cache, tessdata, agent_settings.yaml.
+# Root-anchored on purpose — tests/data/ IS versioned.
+/data/
+/logs/
+*.log
+*.pid
+/temp/
+/tmp/
+
+# Backups & DB dumps (never in git — use object storage)
+/backups/
+*.dump
+*.sql.gz
+*.tar.gz
+*.zip
+
+# ─── Corpus: НПА для ингеста в RAG (large binaries, distributed out-of-band).
+# Имя corpus/, а не documents/ — «documents» в проекте занято сервисом
+# пользовательских документов (neurolegal.documents).
+corpus/*
+!corpus/manifest.yaml
+# Loose client/legal docs dropped at the repo root
+/*.docx
+/*.pdf
+
+# ─── Python ───────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.python-version.local
+*.egg-info/
+.eggs/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.tox/
+.nox/
+.ipynb_checkpoints/
+
+# Local SQLite scratch DBs (agent store is SQLite-portable)
+*.db
+*.sqlite
+*.sqlite3
+
+# ─── Node / frontend ──────────────────────────────────────────────────────
+node_modules/
+dist/
+build/
+.next/
+.turbo/
+.vite/
+*.tsbuildinfo
+.eslintcache
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Design scratch surfaces (built bundles in src/**/api/static/ ARE versioned)
+frontend/design-preview/
+frontend/design-preview-src/components.ssr.html
+
+# ─── Tests, coverage, reports ─────────────────────────────────────────────
+.coverage
+.coverage.*
+coverage.xml
+coverage.json
+htmlcov/
+junit*.xml
+test-results/
+playwright-report/
+.playwright-mcp/
+
+# ─── Agent / AI tooling workspace (per-machine, not shared) ───────────────
+.claude/
+.agents/
+.superpowers/
+/skills-lock.json
+
+# ─── Local docs, planning & tracker (not versioned) ───────────────────────
+/docs/
+/tracking/
+/plan.md
+/prompts.md
+
+# ─── OS / editors ─────────────────────────────────────────────────────────
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+.idea/
+.vscode/
+.zed/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*~
+
+# Merge / patch leftovers
+*.orig
+*.rej
+*.bak
+
+# ─── impeccable ───────────────────────────────────────────────────────────
+# Папка целиком локальная: калибровка детектора, критики, live-прогоны,
+# кэши хука, скриншоты. В репозитории от impeccable не остаётся ничего.
+.impeccable/
+**/.impeccable/
+
+# Ниже — блок, которым управляет сам impeccable (уже покрыт правилами выше).
+# Не редактировать вручную.
+# impeccable-ignore-start
+.impeccable/config.local.json
+.impeccable/hook.cache.json
+.impeccable/hook.pending.json
+.impeccable/*.png
+.impeccable/live/
+.impeccable/critique/
+**/.impeccable/config.local.json
+**/.impeccable/hook.cache.json
+**/.impeccable/hook.pending.json
+**/.impeccable/*.png
+**/.impeccable/live/
+**/.impeccable/critique/
+# impeccable-ignore-end
+
+# OCR-данные для хаба документов: провижинятся на хосте, монтируются в контейнер
+/tessdata/

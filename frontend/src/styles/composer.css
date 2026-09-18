@@ -1,0 +1,198 @@
+/* ===== Композер: ввод, отправка, документы, выбор источников ===== */
+.composer { padding: 10px 24px 18px; }
+.composer-centered { width: 100%; }
+.composer-box { max-width: var(--col); margin: 0 auto; position: relative; }
+.composer-frame { position: relative; z-index: 1; padding: 1.5px; border-radius: var(--r-composer-outer);
+  background: var(--line); transition: background .16s ease, box-shadow .16s ease; }
+.composer-bloom { display: none; }
+.composer-inner { position: relative; z-index: 1; background: var(--card); border-radius: var(--r-composer);
+  padding: 14px 16px; box-shadow: var(--shadow-composer); cursor: text; }
+/* Фокус пустого поля — заметнее серый; с текстом рамка гаснет совсем, и
+   из-под белой карточки «дышит» пастельное гало (E09: красный = действие,
+   но не жёсткой линией, а светом). */
+.composer-box-focused .composer-frame { background: var(--line-2); }
+.composer-box-active .composer-frame { background: transparent; }
+.composer-inner::before {
+  content: ""; position: absolute; inset: 0; z-index: -1;
+  border-radius: var(--r-composer); opacity: 0; transition: opacity .35s ease;
+  box-shadow: 0 0 32px 2px var(--accent-glow);
+}
+.composer-box-active .composer-inner::before {
+  opacity: 1;
+  animation: composer-breathe 3.6s ease-in-out infinite;
+}
+@keyframes composer-breathe {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .composer-box-active .composer-inner::before { animation: none; opacity: 0.7; }
+}
+
+.composer-inner textarea { width: 100%; border: 0; outline: none; resize: none; font: inherit;
+  font-size: 14px; max-height: 200px; line-height: 1.4; }
+.composer-inner textarea::placeholder { color: var(--muted-strong); }
+.composer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; }
+/* поверх core: круглая чёрная кнопка отправки — фирменный вид Kurs */
+.send.send { width: 34px; height: 34px; border-radius: 50%; background: var(--ink); color: var(--on-dark); }
+.send.send:hover:not(:disabled) { background: var(--ink-hover); }
+.send.send:disabled { background: var(--line); color: var(--faint); }
+.disclaimer { max-width: var(--col); margin: 8px auto 0; text-align: center; font-size: 12px; color: var(--muted-strong); }
+.composer-limit { font-size: 12px; color: var(--danger); margin-left: auto; margin-right: 10px; }
+.composer-left { display: flex; align-items: center; gap: 8px; }
+.composer-attach.composer-attach { width: 34px; height: 34px; border-radius: 50%;
+  border: 1px solid var(--line); background: var(--card); color: var(--ink-3); }
+.composer-attach.composer-attach:hover:not(:disabled) { background: var(--hover); color: var(--ink); }
+.composer-attach.composer-attach:disabled { color: var(--ghost); }
+
+/* готовые команды на Home — тихие плашки под композером */
+.home-cmds { max-width: var(--col); margin: 14px auto 0; display: grid;
+  grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.home-cmd { font: inherit; text-align: left; padding: 13px 14px; background: var(--card);
+  border: 1px solid var(--line-soft); border-radius: var(--r-panel); cursor: pointer;
+  transition: border-color .14s ease, box-shadow .14s ease; }
+.home-cmd:hover { border-color: var(--ink); }
+.home-cmd svg { color: var(--ink-3); display: block; }
+.home-cmd-t { display: block; font-size: 13px; font-weight: 500; color: var(--ink); margin-top: 10px; }
+.home-cmd-s { display: block; font-size: 12px; line-height: 1.4; color: var(--muted-strong); margin-top: 3px; }
+@media (max-width: 760px) {
+  .home-cmds { grid-template-columns: 1fr 1fr; }
+}
+
+/* uploaded-document strip + review menu */
+.doc-strip { max-width: var(--col); margin: 0 auto 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+.doc-chip-wrap { position: relative; }
+.doc-chip { display: inline-flex; align-items: center; gap: 6px; max-width: 260px;
+  border: 1px solid var(--line); border-radius: var(--r-pill); padding: 5px 12px; background: var(--card);
+  font-size: 12px; color: var(--ink-2); cursor: pointer; }
+.doc-chip:hover:not(:disabled) { background: var(--hover); color: var(--ink); }
+.doc-chip:disabled { cursor: default; }
+/* Тип-иконка документа в чипе — та же плашка, что в «Файлах»/«Источниках»
+   (E09, T-0063), в масштабе чипа. */
+.doc-chip .file-ico { flex-shrink: 0; width: 15px; height: 15px; }
+.doc-chip-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.doc-chip-failed { color: var(--muted); border-style: dashed; }
+.doc-chip-err { flex-shrink: 0; color: var(--accent); opacity: .75; font-size: 11px; }
+.doc-chip-status { flex-shrink: 0; color: var(--muted); font-size: 11px; }
+.doc-menu { position: absolute; bottom: calc(100% + 8px); left: 0; min-width: 220px; max-width: 300px;
+  background: var(--card); border: 1px solid var(--line-soft); border-radius: var(--r-panel);
+  box-shadow: var(--shadow-3); padding: 6px; z-index: 20; }
+.doc-menu-head { font-size: 11px; font-weight: 600; color: var(--faint); text-transform: uppercase;
+  letter-spacing: .04em; padding: 8px 10px 6px; }
+.doc-menu-status { padding: 8px 10px; font-size: 12px; color: var(--muted); }
+.doc-menu-item { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; text-align: left; background: none; border: 0; border-radius: var(--r-row); padding: 8px 10px;
+  font-size: 13px; color: var(--ink-2); cursor: pointer; }
+.doc-menu-item:hover { background: var(--hover); color: var(--ink); }
+.doc-menu-item-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.doc-menu-item-count { flex-shrink: 0; font-size: 11px; color: var(--muted); }
+
+/* Экран сценариев меню чипа (T-0050, макет review-entry-dialog экран 1):
+   двухстрочные пункты с иконкой — в отличие от однострочных плейбучных.
+   Без head (имя файла уже на чипе, T-0053); меню шире, чтобы названия
+   пунктов не переносились; иконка выровнена по первой строке текста. */
+.doc-menu-scenario { min-width: 280px; padding-top: 6px; }
+.doc-menu-item-scenario { justify-content: flex-start; align-items: flex-start; gap: 9px; }
+.doc-menu-item-scenario .doc-menu-item-icon { margin-top: 2px; }
+.doc-menu-item-icon { color: var(--muted-strong); flex: 0 0 auto; }
+.doc-menu-item-text { display: block; min-width: 0; }
+.doc-menu-item-text small { display: block; font-size: 11px; color: var(--muted-strong); margin-top: 1px; }
+
+/* source selector */
+.source-selector { position: relative; }
+.source-pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line);
+  border-radius: var(--r-pill); padding: 6px 12px; font-size: 13px; color: var(--ink-2); background: var(--card); cursor: pointer; }
+.source-pill:disabled { color: var(--ghost); cursor: not-allowed; }
+.source-badge { background: var(--ink); color: var(--on-dark); border-radius: var(--r-pill); padding: 0 7px; font-size: 11px; }
+.source-ico { color: var(--muted-2); flex: none; }
+.source-panel { width: 264px;
+  background: var(--card); border: 1px solid var(--line-soft); border-radius: var(--r-card);
+  box-shadow: var(--shadow-3); padding: 6px; z-index: 20; }
+/* Заголовок панели — предложением, не капсом (решение клиента, E09). */
+.source-panel-head { font-size: 12px; font-weight: 600; color: var(--muted-strong); padding: 8px 10px 6px; }
+.source-panel-list { max-height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+.source-row { display: flex; align-items: center; gap: 8px; width: 100%;
+  border-radius: var(--r-row); padding: 8px 10px; font-size: 13px; color: var(--ink-3); cursor: pointer; }
+.source-row:hover { background: var(--hover); }
+
+/* Выбор группами + унфолд панели как у меню скрепки (E09, T-0057; вариант
+   «иконки типов» без подзаголовков, утверждён клиентом в live-сессии). */
+.source-panel {
+  transform-origin: 24px calc(100% + 14px);
+  transition: opacity 0.22s cubic-bezier(0.2, 0, 0, 1), transform 0.22s cubic-bezier(0.2, 0, 0, 1);
+}
+@starting-style {
+  .source-panel { opacity: 0; transform: scale(0.72); }
+}
+.source-group { display: flex; align-items: center; gap: 9px; width: 100%; padding: 8px 10px;
+  border: 0; background: none; border-radius: var(--r-row); text-align: left; cursor: pointer;
+  font: inherit; font-size: 13px; font-weight: 500; color: var(--ink);
+  transition: opacity 0.18s cubic-bezier(0.2, 0, 0, 1), transform 0.18s cubic-bezier(0.2, 0, 0, 1),
+    background 0.12s ease; }
+@starting-style {
+  .source-group { opacity: 0; transform: translateY(6px); }
+}
+.source-group:nth-of-type(1) { transition-delay: 0.07s, 0.07s, 0s; }
+.source-group:nth-of-type(2) { transition-delay: 0.12s, 0.12s, 0s; }
+.source-group:nth-of-type(3) { transition-delay: 0.17s, 0.17s, 0s; }
+.source-group:hover:not(:disabled) { background: var(--hover); }
+.source-group:disabled { color: var(--disabled); cursor: default; }
+.source-group:disabled .src-aico { opacity: 0.45; }
+/* Кружочек-индикатор выбора (E09, T-0058): всегда виден — призрачное кольцо
+   в покое, заливка графитом с галочкой у выбранной группы. */
+.source-group-mark { width: 17px; height: 17px; border-radius: var(--r-pill);
+  border: 1.5px solid var(--line-soft); margin-left: auto; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--on-dark);
+  transition: border-color 0.12s ease, background 0.12s ease; }
+.source-group-on .source-group-mark { border-color: var(--ink); background: var(--ink); }
+.source-group:disabled .source-group-mark { opacity: 0.4; }
+@media (prefers-reduced-motion: reduce) {
+  .source-panel, .source-group { transition: none; }
+}
+
+.source-retry { align-self: flex-start; background: none; border: 1px solid var(--warn); color: var(--warn);
+  border-radius: var(--r-row); padding: 4px 10px; font-size: 12px; cursor: pointer; }
+.source-retry:hover { background: var(--warn-bg); }
+.source-row-status { color: var(--warn); cursor: default; display: flex; align-items: center;
+  justify-content: space-between; gap: 8px; }
+
+@media (max-width: 760px) {
+  .composer { padding: 8px 12px 12px; }
+  .composer-row { gap: 6px; flex-wrap: wrap; }
+  .source-panel { width: min(86vw, 264px); }
+}
+
+/* Скрепка 2.0 (T-0054): намерение до файла — меню сценариев разворачивается
+   из точки скрепки (вариант «панель-унфолд», утверждён клиентом в
+   live-сессии impeccable; каскад пунктов, поворот иконки). */
+.attach-wrap { position: relative; display: inline-flex; }
+.attach-clip-icon { transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1); }
+.attach-wrap:has(.attach-menu) .attach-clip-icon { transform: rotate(-12deg); }
+.attach-menu { position: absolute; left: 0; bottom: calc(100% + 8px); min-width: 272px; z-index: 30;
+  background: var(--card); border: 1px solid var(--line-soft); border-radius: var(--r-panel);
+  padding: 6px; box-shadow: var(--shadow-3);
+  transform-origin: 14px calc(100% + 14px);
+  transition: opacity 0.22s cubic-bezier(0.2, 0, 0, 1), transform 0.22s cubic-bezier(0.2, 0, 0, 1); }
+@starting-style {
+  .attach-menu { opacity: 0; transform: scale(0.72); }
+}
+.attach-item { display: flex; align-items: flex-start; gap: 9px; width: 100%; padding: 8px 10px;
+  border: 0; background: none; border-radius: var(--r-row); text-align: left; cursor: pointer;
+  font: inherit; font-size: 13px; font-weight: 500; color: var(--ink);
+  transition: opacity 0.18s cubic-bezier(0.2, 0, 0, 1), transform 0.18s cubic-bezier(0.2, 0, 0, 1),
+    background 0.12s ease; }
+@starting-style {
+  .attach-item { opacity: 0; transform: translateY(6px); }
+}
+.attach-item:nth-of-type(1) { transition-delay: 0.07s, 0.07s, 0s; }
+.attach-item:nth-of-type(2) { transition-delay: 0.12s, 0.12s, 0s; }
+.attach-item:hover { background: var(--hover); }
+.attach-item:focus-visible { outline: 1.5px solid var(--ink); outline-offset: 1px; }
+.attach-item-icon { color: var(--muted-strong); margin-top: 2px; flex: 0 0 auto; }
+.attach-item-text small { display: block; font-weight: 400; font-size: 11px;
+  color: var(--muted-strong); margin-top: 1px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .attach-menu, .attach-item, .attach-clip-icon { transition: none; }
+}

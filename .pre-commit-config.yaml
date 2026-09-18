@@ -1,0 +1,69 @@
+# Git-хуки neurolegal. Установка: `make hooks` (или
+# `uv run pre-commit install --hook-type pre-commit --hook-type pre-push`).
+#
+# pre-commit (на каждый коммит, суб-секундно): линт + формат + строгая
+# типизация + гигиена. pre-push (финальный гейт): юнит-тесты + typecheck
+# фронтенда при изменении frontend/**. Интеграционные тесты (нужны DB/сеть)
+# в хуки намеренно не входят.
+
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.14.4
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      # Собранные бандлы SPA — генерённые артефакты (коммитятся по
+      # конвенции): гигиена не должна править минифицированный вывод —
+      # хвостовые пробелы бывают внутри строковых литералов зависимостей
+      # (CSS-in-JS core-components), их «починка» меняет содержимое строк.
+      - id: trailing-whitespace
+        exclude: ^src/neurolegal/(agent|rag)/api/static/
+      - id: end-of-file-fixer
+        exclude: ^src/neurolegal/(agent|rag)/api/static/
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (strict, src + deploy)
+        entry: uv run mypy src deploy
+        language: system
+        pass_filenames: false
+        types: [python]
+
+      # --- pre-push: тяжёлые финальные проверки ---
+      - id: pytest-unit
+        name: pytest tests/unit
+        entry: uv run pytest tests/unit -q
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]
+
+      - id: frontend-typecheck
+        name: frontend tsc --noEmit
+        entry: npm --prefix frontend run typecheck
+        language: system
+        pass_filenames: false
+        files: ^frontend/.*\.(ts|tsx)$
+        stages: [pre-push]
+
+      # Дизайн-закон: детектор impeccable блокирует push при находках
+      # (после чистки долга baseline = 0 находок). Бинарь — devDep фронтенда
+      # (make sync), не плавающий npx: детерминированная версия, без сети.
+      - id: impeccable-detect
+        name: impeccable detect frontend/src
+        entry: frontend/node_modules/.bin/impeccable detect frontend/src --quiet
+        language: system
+        pass_filenames: false
+        files: ^frontend/
+        stages: [pre-push]
