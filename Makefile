@@ -4,7 +4,7 @@
 
 .DEFAULT_GOAL := help
 .PHONY: help sync hooks impeccable up down dev rag agent documents templates frontend migrate \
-        lint format typecheck test test-int check openapi build deploy deploy-history
+        lint format typecheck test test-int check openapi build deploy deploy-history bootstrap-cd
 
 # --- meta ------------------------------------------------------------------
 
@@ -101,6 +101,16 @@ build: ## production-сборка обоих фронтенд-бандлов (ch
 DEPLOY_HOST ?= $(NEUROLEGAL_DEPLOY_HOST)
 DEPLOY_DIR  ?= /srv/neurolegal
 DEPLOY_LOG  ?= /var/log/neurolegal-deploys.log
+
+bootstrap-cd: ## Один раз: VM + GitHub secrets. Пример: make bootstrap-cd HOST=1.2.3.4 SSH_USER=ubuntu ENV_FILE=.env.prod
+	@test -n "$(HOST)" || (echo "укажите HOST=ip" && exit 1)
+	@test -n "$(SSH_USER)" || (echo "укажите SSH_USER=ubuntu" && exit 1)
+	python3 deploy/bootstrap_cd.py --host "$(HOST)" --user "$(SSH_USER)" \
+		$(if $(PORT),--port $(PORT),) \
+		$(if $(IDENTITY),--identity $(IDENTITY),) \
+		$(if $(REPO),--repo $(REPO),) \
+		$(if $(ENV_FILE),--env-file $(ENV_FILE),) \
+		$(if $(RELEASE),--release $(RELEASE),)
 
 deploy: ## Запасной путь: выкатить тег с ноутбука. Обычный путь — job deploy в Actions (deploy/CD.md).
 	@test -n "$(TAG)" || (echo "укажите TAG, например: make deploy TAG=v0.3.0" && exit 1)

@@ -6,8 +6,37 @@
 
 Раскатка с ветки `main` без тега не делается: прод — это checkout тега.
 
-Полный ручной регламент релиза — `RELEASE.md`. Этот файл — что настроить
-один раз, чтобы джоба `deploy` в `.github/workflows/ci.yml` заработала.
+Полный ручной регламент релиза — `RELEASE.md`.
+
+## Один скрипт вместо ручных шагов
+
+С машины, с которой вы уже заходите на VM (`ssh ubuntu@IP` работает), в клоне
+репозитория. Нужны `python3`, `ssh`, `gh` (`gh auth login` с правом на secrets
+и deploy keys). Passwordless sudo на VM — для apt/docker и `/srv`.
+
+1. Заполните `.env.prod` по `.env.prod.example` (в git не класть).
+2. Запустите:
+
+```bash
+python3 deploy/bootstrap_cd.py \
+  --host IP_СЕРВЕРА \
+  --user ubuntu \
+  --env-file .env.prod \
+  --release v0.1.0
+```
+
+Скрипт сам: поставит docker/git на VM, tessdata, два SSH-ключа, read-only
+Deploy key, секреты Actions (`DEPLOY_HOST` / `DEPLOY_USER` / `DEPLOY_SSH_KEY`),
+склонирует репо в `/srv/neurolegal`, скопирует `.env.prod`, поставит тег и
+запушит его. Дальше выкатывает job `deploy` в Actions.
+
+Без тега (только провижининг): уберите `--release`. Повторы безопасны —
+команды идемпотентны.
+
+`--identity ~/.ssh/id_ed25519` — если на VM вы заходите не дефолтным ключом.
+`--repo owner/name` — если origin клона другой.
+
+Ниже — тот же чеклист вручную, если скрипт запускать нельзя.
 
 ## Секреты GitHub
 

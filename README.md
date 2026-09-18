@@ -196,7 +196,8 @@ make deploy TAG=vX.Y.Z DEPLOY_HOST=user@host
 ```
 
 **A release is gated on CI, then rolled out automatically.**
-`.github/workflows/ci.yml` runs lint, mypy strict, unit and mocked-integration
+First-time VM + GitHub secrets: `python3 deploy/bootstrap_cd.py --host IP --user ubuntu --env-file .env.prod`
+(see `deploy/CD.md`). `.github/workflows/ci.yml` runs lint, mypy strict, unit and mocked-integration
 tests and both frontend builds on every push to `main`, every PR, and every
 `v*` tag. A green run **on a tag** pushes a marker ref `refs/ci-passed/<sha>`
 and SSHes to the VM (`deploy/github_remote.sh`) to run `deploy.sh`. The script
