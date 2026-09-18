@@ -1,0 +1,43 @@
+/* Слой 1: маппинг токенов Kurs (tokens.css) на CSS-переменные core-components.
+   Инвариант: справа только var(...) из tokens.css — новых значений здесь нет. */
+/* Точечный набор вместо vars/index.css: без typography.css и mixins.css —
+   это @define-mixin-файлы для postcss-сборки компонент, в браузере мёртвый груз. */
+@import "@alfalab/core-components/vars/colors-bluetint.css";
+@import "@alfalab/core-components/vars/colors-addons.css";
+@import "@alfalab/core-components/vars/shadows-bluetint.css";
+@import "@alfalab/core-components/vars/border-radius.css";
+@import "@alfalab/core-components/vars/gaps.css";
+@import "@alfalab/core-components/vars/typography-vars.css";
+@import "@alfalab/core-components/vars/common.css";
+
+:root {
+  /* шрифты */
+  --font-family-system: var(--font-ui);
+  --font-family: var(--font-ui);
+  --font-family-styrene: var(--font-display);
+
+  /* акцент: bluetint уже #ef3124, пиним к нашему источнику правды */
+  --color-light-accent-primary: var(--red-01);
+  --color-light-accent-primary-hover: var(--red-11);
+  --color-light-accent-primary-press: var(--red-04);
+
+  /* радиусы кнопок — шкала Kurs (по умолчанию в core крупнее) */
+  --button-xxs-size-border-radius: var(--r-btn);
+  --button-xs-size-border-radius: var(--r-btn);
+  --button-s-size-border-radius: var(--r-btn);
+  --button-m-size-border-radius: var(--r-btn);
+
+  /* outlined-кнопки: рамка Kurs — едва заметная, не translucent-1300 (почти чёрная) */
+  --button-outlined-base-border-color: var(--line);
+  --button-outlined-hover-border-color: var(--gray-10);
+}
+
+/* Поппер core-components всегда «голый»: поверхность (фон, рамка, тень,
+   радиус) рисует контент поповера (source-panel, article-pop и т.д.) —
+   иначе за скруглённой панелью проглядывает прямоугольник контейнера. */
+.popover-bare {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}

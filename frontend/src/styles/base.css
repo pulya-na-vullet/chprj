@@ -1,0 +1,6 @@
+/* ===== База приложения: reset + каркас ===== */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body { margin: 0; color: var(--ink); background: var(--canvas); }
+
+.app { display: flex; height: 100vh; overflow: hidden; }

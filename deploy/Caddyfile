@@ -1,0 +1,28 @@
+{$NEUROLEGAL_DOMAIN} {
+	encode gzip
+
+	# Стабильные имена бандлов (app.js без хеша) + StaticFiles без Cache-Control:
+	# без этого часть браузеров будет держать старый бандл после выкатки.
+	@html path / /index.html
+	header @html Cache-Control "no-cache"
+
+	reverse_proxy agent:8000 {
+		# SSE: без этого поток ответа склеивается в один кусок.
+		flush_interval -1
+	}
+}
+
+www.{$NEUROLEGAL_DOMAIN} {
+	# Ровно один origin допустим: allowlist агента строится из
+	# NEUROLEGAL_PUBLIC_BASE_URL, второй origin получит 403 на мутациях.
+	redir https://{$NEUROLEGAL_DOMAIN}{uri} permanent
+}
+
+admin.{$NEUROLEGAL_DOMAIN} {
+	basic_auth {
+		{$NEUROLEGAL_ADMIN_USER} {$NEUROLEGAL_ADMIN_PASSWORD_HASH}
+	}
+	reverse_proxy rag:8001 {
+		flush_interval -1
+	}
+}

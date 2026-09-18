@@ -1,0 +1,211 @@
+- code_id: АПК
+  kind: codex
+  short_name: АПК РФ
+  full_name: Арбитражный процессуальный кодекс Российской Федерации
+  branch: Арбитражный процесс
+  docx_s3_key: corpus/apk.docx
+- code_id: БК
+  kind: codex
+  short_name: БК РФ
+  full_name: Бюджетный кодекс Российской Федерации
+  branch: Финансовое право
+  docx_s3_key: corpus/bk.docx
+- code_id: ВК
+  kind: codex
+  short_name: ВК РФ
+  full_name: Водный кодекс Российской Федерации
+  branch: Экологическое право
+  docx_s3_key: corpus/vk.docx
+- code_id: ВзК
+  kind: codex
+  short_name: ВзК РФ
+  full_name: Воздушный кодекс Российской Федерации
+  branch: Транспортное право
+  docx_s3_key: corpus/vzk.docx
+- code_id: ГрК
+  kind: codex
+  short_name: ГрК РФ
+  full_name: Градостроительный кодекс Российской Федерации
+  branch: Градостроительное право
+  docx_s3_key: corpus/grk.docx
+- code_id: ГК-1
+  kind: codex
+  short_name: ГК РФ
+  full_name: Гражданский кодекс Российской Федерации (часть первая)
+  branch: Гражданское право
+  docx_s3_key: corpus/gk-1.docx
+- code_id: ГК-2
+  kind: codex
+  short_name: ГК РФ
+  full_name: Гражданский кодекс Российской Федерации (часть вторая)
+  branch: Гражданское право
+  docx_s3_key: corpus/gk-2.docx
+- code_id: ГК-3
+  kind: codex
+  short_name: ГК РФ
+  full_name: Гражданский кодекс Российской Федерации (часть третья)
+  branch: Гражданское право
+  docx_s3_key: corpus/gk-3.docx
+- code_id: ГК-4
+  kind: codex
+  short_name: ГК РФ
+  full_name: Гражданский кодекс Российской Федерации (часть четвертая)
+  branch: Гражданское право
+  docx_s3_key: corpus/gk-4.docx
+- code_id: ГПК
+  kind: codex
+  short_name: ГПК РФ
+  full_name: Гражданский процессуальный кодекс Российской Федерации
+  branch: Гражданский процесс
+  docx_s3_key: corpus/gpk.docx
+- code_id: ЖК
+  kind: codex
+  short_name: ЖК РФ
+  full_name: Жилищный кодекс Российской Федерации
+  branch: Жилищное право
+  docx_s3_key: corpus/zhk.docx
+- code_id: ЗК
+  kind: codex
+  short_name: ЗК РФ
+  full_name: Земельный кодекс Российской Федерации
+  branch: Земельное право
+  docx_s3_key: corpus/zk.docx
+- code_id: КоАП
+  kind: codex
+  short_name: КоАП РФ
+  full_name: Кодекс Российской Федерации об административных правонарушениях
+  branch: Административное право
+  docx_s3_key: corpus/koap.docx
+- code_id: КАС
+  kind: codex
+  short_name: КАС РФ
+  full_name: Кодекс административного судопроизводства Российской Федерации
+  branch: Административный процесс
+  docx_s3_key: corpus/kas.docx
+- code_id: КВВТ
+  kind: codex
+  short_name: КВВТ РФ
+  full_name: Кодекс внутреннего водного транспорта Российской Федерации
+  branch: Транспортное право
+  docx_s3_key: corpus/kvvt.docx
+- code_id: КТМ
+  kind: codex
+  short_name: КТМ РФ
+  full_name: Кодекс торгового мореплавания Российской Федерации
+  branch: Транспортное право
+  docx_s3_key: corpus/ktm.docx
+- code_id: ЛК
+  kind: codex
+  short_name: ЛК РФ
+  full_name: Лесной кодекс Российской Федерации
+  branch: Экологическое право
+  docx_s3_key: corpus/lk.docx
+- code_id: НК-1
+  kind: codex
+  short_name: НК РФ
+  full_name: Налоговый кодекс Российской Федерации (часть первая)
+  branch: Налоговое право
+  docx_s3_key: corpus/nk-1.docx
+- code_id: НК-2
+  kind: codex
+  short_name: НК РФ
+  full_name: Налоговый кодекс Российской Федерации (часть вторая)
+  branch: Налоговое право
+  docx_s3_key: corpus/nk-2.docx
+- code_id: СК
+  kind: codex
+  short_name: СК РФ
+  full_name: Семейный кодекс Российской Федерации
+  branch: Семейное право
+  docx_s3_key: corpus/sk.docx
+- code_id: ТК-ЕАЭС
+  kind: codex
+  short_name: ТК ЕАЭС
+  full_name: Таможенный кодекс Евразийского экономического союза
+  branch: Таможенное право
+  docx_s3_key: corpus/tk-eaes.docx
+- code_id: ТК
+  kind: codex
+  short_name: ТК РФ
+  full_name: Трудовой кодекс Российской Федерации
+  branch: Трудовое право
+  docx_s3_key: corpus/tk.docx
+- code_id: УИК
+  kind: codex
+  short_name: УИК РФ
+  full_name: Уголовно-исполнительный кодекс Российской Федерации
+  branch: Уголовно-исполнительное право
+  docx_s3_key: corpus/uik.docx
+- code_id: УПК
+  kind: codex
+  short_name: УПК РФ
+  full_name: Уголовно-процессуальный кодекс Российской Федерации
+  branch: Уголовный процесс
+  docx_s3_key: corpus/upk.docx
+- code_id: УК
+  kind: codex
+  short_name: УК РФ
+  full_name: Уголовный кодекс Российской Федерации
+  branch: Уголовное право
+  docx_s3_key: corpus/uk.docx
+- code_id: ЗПП
+  kind: federal_law
+  short_name: 2300-1 «О защите прав потребителей»
+  full_name: Закон РФ «О защите прав потребителей» от 07.02.1992 N 2300-1
+  branch: Защита прав потребителей
+  docx_s3_key: corpus/zpp.docx
+- code_id: ФЗ-229
+  kind: federal_law
+  short_name: 229-ФЗ
+  full_name: Об исполнительном производстве
+  branch: Исполнительное производство
+  docx_s3_key: corpus/fz-229.docx
+- code_id: ФЗ-99
+  kind: federal_law
+  short_name: 99-ФЗ
+  full_name: О лицензировании отдельных видов деятельности
+  branch: Административное право
+  docx_s3_key: corpus/fz-99.docx
+- code_id: ФЗ-44
+  kind: federal_law
+  short_name: 44-ФЗ
+  full_name: О контрактной системе в сфере закупок товаров, работ, услуг
+  branch: Закупки
+  docx_s3_key: corpus/fz-44.docx
+- code_id: ФЗ-14
+  kind: federal_law
+  short_name: 14-ФЗ
+  full_name: Об обществах с ограниченной ответственностью
+  branch: Корпоративное право
+  docx_s3_key: corpus/fz-14.docx
+- code_id: ФЗ-129
+  kind: federal_law
+  short_name: 129-ФЗ
+  full_name: О государственной регистрации юридических лиц и индивидуальных предпринимателей
+  branch: Корпоративное право
+  docx_s3_key: corpus/fz-129.docx
+- code_id: ФЗ-218
+  kind: federal_law
+  short_name: 218-ФЗ
+  full_name: О государственной регистрации недвижимости
+  branch: Регистрация недвижимости
+  docx_s3_key: corpus/fz-218.docx
+- code_id: ФЗ-223
+  kind: federal_law
+  short_name: 223-ФЗ
+  full_name: О закупках товаров, работ, услуг отдельными видами юридических лиц
+  branch: Закупки
+  docx_s3_key: corpus/fz-223.docx
+- code_id: ФЗ-208
+  kind: federal_law
+  short_name: 208-ФЗ
+  full_name: Об акционерных обществах
+  branch: Корпоративное право
+  docx_s3_key: corpus/fz-208.docx
+- code_id: ФЗ-294
+  kind: federal_law
+  short_name: 294-ФЗ
+  full_name: О защите прав юридических лиц и индивидуальных предпринимателей при осуществлении
+    государственного контроля (надзора) и муниципального контроля
+  branch: Административное право
+  docx_s3_key: corpus/fz-294.docx

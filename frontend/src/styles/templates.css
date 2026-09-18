@@ -1,0 +1,130 @@
+/* ===== Шаблоны: витрина-галерея (E20, T-0136) =====
+   Язык окна чата: белое окно на сером холсте (референс — flow-full.html шаг 1,
+   карточки-подсказки Home). Красного нет: ховер — чёрная обводка + «Заполнить». */
+.templates {
+  flex: 1; min-width: 0; display: flex; padding: 14px 18px 18px 4px;
+}
+.templates-win {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden;
+  background: var(--card); border: 1px solid var(--line-soft); border-radius: var(--r-card);
+  box-shadow: var(--shadow-window);
+}
+
+.templates-head { padding: 30px 36px 6px; }
+.templates-title {
+  font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 4px;
+}
+.templates-sub { font-size: 13.5px; color: var(--muted); margin: 0; }
+
+.templates-body { flex: 1; overflow-y: auto; padding: 10px 36px 24px; }
+.templates-cat {
+  font-size: 12px; font-weight: 500; color: var(--muted-2); margin: 18px 0 10px;
+}
+.templates-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px; max-width: 860px;
+}
+
+.templates-card {
+  font: inherit; text-align: left; background: none; cursor: pointer;
+  border: 1px solid var(--line); border-radius: var(--r-row);
+  padding: 14px 15px 12px; position: relative;
+  transition: border-color 120ms ease;
+}
+.templates-card svg { color: var(--ink-3); margin-bottom: 9px; }
+.templates-card b { display: block; font-size: 13.5px; font-weight: 600; margin-bottom: 4px; }
+.templates-card p {
+  margin: 0 0 12px; font-size: 12px; color: var(--muted); line-height: 1.45;
+}
+.templates-meta { font-size: 12px; color: var(--faint); }
+.templates-card:hover, .templates-card:focus-visible { border-color: var(--ink); }
+.templates-go {
+  position: absolute; right: 14px; bottom: 11px; font-size: 12.5px; font-weight: 500;
+  color: var(--ink); display: none; align-items: center; gap: 5px;
+}
+.templates-go svg { margin: 0; color: var(--ink); }
+.templates-card:hover .templates-go,
+.templates-card:focus-visible .templates-go { display: inline-flex; }
+
+/* состояния раздела */
+.templates-skel {
+  height: 118px; border: 1px solid var(--line-soft); border-radius: var(--r-row);
+  background: var(--hover); animation: templates-skel-pulse 1.2s ease-in-out infinite;
+}
+@keyframes templates-skel-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.9; } }
+@media (prefers-reduced-motion: reduce) {
+  .templates-skel { animation: none; }
+}
+.templates-empty { margin: 24px 0; font-size: 13.5px; color: var(--muted); }
+.templates-error {
+  display: flex; align-items: center; gap: 12px; margin: 18px 0;
+  font-size: 13px; color: var(--muted);
+}
+
+/* ===== Панель сводки staged-черновика (E20 T-0137, flow-full шаг 6) ===== */
+/* Карточка стоит НАД текстом сообщения (T-0141): снизу — вопрос-подтверждение */
+.tpld {
+  border: 1px solid var(--line); border-radius: var(--r-row);
+  margin: 4px 0 10px; overflow: hidden;
+}
+.tpld-head {
+  display: flex; align-items: baseline; padding: 11px 16px 9px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.tpld-head b { font-size: 13.5px; font-weight: 600; }
+.tpld-head span { margin-left: auto; font-size: 12px; color: var(--faint); }
+.tpld-row {
+  display: flex; align-items: baseline; gap: 14px; padding: 7px 16px; font-size: 13.5px;
+}
+.tpld-row + .tpld-row { border-top: 1px solid var(--line-soft); }
+.tpld-k { width: 170px; flex: none; color: var(--muted); font-size: 13px; }
+.tpld-v { font-weight: 500; min-width: 0; }
+.tpld-src {
+  font-size: 11px; color: var(--faint); border: 1px solid var(--line);
+  border-radius: 999px; padding: 1px 7px; margin-left: 8px; font-weight: 400;
+  white-space: nowrap;
+}
+
+/* ===== Карточка готового документа (E20 T-0137, flow-full шаг 7) ===== */
+.tpldoc {
+  display: flex; align-items: center; gap: 12px; border: 1px solid var(--line);
+  border-radius: var(--r-row); padding: 12px 14px; margin: 4px 0 10px; max-width: 540px;
+}
+.tpldoc .file-ico { flex: none; }
+.tpldoc-info { min-width: 0; }
+.tpldoc-name {
+  font-size: 13.5px; font-weight: 500;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tpldoc-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.tpldoc-acts { margin-left: auto; display: flex; gap: 8px; flex: none; }
+.tpldoc-btn {
+  font: inherit; font-size: 13px; font-weight: 500; padding: 8px 16px;
+  border-radius: var(--r-btn); cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center;
+}
+.tpldoc-btn-main { border: 0; background: var(--accent); color: var(--on-dark); }
+.tpldoc-btn-main:hover { background: var(--accent-hover); }
+.tpldoc-btn-quiet {
+  border: 1px solid var(--line-2); background: none; color: var(--ink);
+}
+.tpldoc-btn-quiet:hover { background: var(--hover-2); }
+
+/* ===== Пикер «Из моих файлов» (E20 T-0137, flow-full шаг 4) ===== */
+.fpk { display: flex; flex-direction: column; gap: 10px; }
+.fpk-list { max-height: 320px; overflow-y: auto; margin: 0 -8px; }
+.fpk-row {
+  display: flex; align-items: center; gap: 11px; padding: 9px 12px;
+  border-radius: var(--r-btn); cursor: pointer;
+}
+.fpk-row:hover { background: var(--hover); }
+.fpk-row-on { background: var(--hover-2); }
+.fpk-radio { position: absolute; opacity: 0; pointer-events: none; }
+.fpk-text { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.fpk-name { font-size: 13.5px; font-weight: 500; }
+.fpk-su {
+  font-size: 12px; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 300px;
+}
+.fpk-dt { margin-left: auto; font-size: 12px; color: var(--faint); flex: none; }
+.fpk-note { font-size: 13px; color: var(--muted); padding: 10px 4px; }

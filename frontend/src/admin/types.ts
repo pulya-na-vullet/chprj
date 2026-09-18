@@ -1,0 +1,33 @@
+import type { components } from "../api/generated/rag";
+
+type S = components["schemas"];
+
+export type AdminDocument = S["AdminDocument"];
+export type AdminDocumentsResponse = S["AdminDocumentsResponse"];
+export type DocumentStatus = AdminDocument["status"];
+export type LegalActKind = AdminDocument["kind"];
+export type JobOut = S["JobOut"];
+export type JobsResponse = S["JobsResponse"];
+export type IngestAccepted = S["IngestAccepted"];
+export type ManifestUpdateRequest = S["ManifestUpdateRequest"];
+export type DeleteDocumentRequest = S["DeleteDocumentRequest"];
+export type UploadDocumentResponse = S["UploadDocumentResponse"];
+export type AdminArticleListItem = S["AdminArticleListItem"];
+export type AdminArticlesResponse = S["AdminArticlesResponse"];
+export type AdminArticleDetail = S["AdminArticleDetail"];
+export type IndexesStatusResponse = S["IndexesStatusResponse"];
+export type SearchResponse = S["SearchResponse"];
+export type SearchedArticle = S["SearchedArticle"];
+export type AgentSettings = S["AgentSettings"];
+export type OpenRouterModelsResponse = S["OpenRouterModelsResponse"];
+export type OpenRouterModel = S["OpenRouterModel"];
+export type AgentPromptDefaults = S["AgentPromptDefaults"];
+export type AdminUserOut = S["AdminUserOut"];
+export type AdminUsersResponse = S["AdminUsersResponse"];
+export type AdminUserPatchRequest = S["AdminUserPatchRequest"];
+export type AdminTemplateOut = S["AdminTemplateOut"];
+export type AdminTemplatesResponse = S["AdminTemplatesResponse"];
+export type AdminTemplatePatchRequest = S["AdminTemplatePatchRequest"];
+export type TemplateField = S["TemplateField"];
+export type TemplateFieldKind = TemplateField["kind"];
+export type TemplateFileReplaceResponse = S["TemplateFileReplaceResponse"];

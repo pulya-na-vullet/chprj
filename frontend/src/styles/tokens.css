@@ -1,0 +1,148 @@
+/* Brand fonts — self-hosted (Alfa CDN blocks cross-origin loads via CORS).
+   Files live in frontend/public/fonts and ship to each app's static dir. */
+@font-face {
+  font-family: "Alfa Interface Sans"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("/fonts/alfa-interface-sans_regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Alfa Interface Sans"; font-weight: 500; font-style: normal; font-display: swap;
+  src: url("/fonts/alfa-interface-sans_medium.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Alfa Interface Sans"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("/fonts/alfa-interface-sans_bold.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Styrene A LC Black"; font-weight: 400 900; font-style: normal; font-display: swap;
+  src: url("/fonts/Styrene-A-LC-Black.woff") format("woff");
+}
+
+:root {
+  /* Alfa Kurs primitives from kurs.alfabank.ru */
+  --gray-01: #FFFFFF;
+  --gray-02: #0E0E0E;
+  --gray-03: #1C1C1E;
+  --gray-04: #27272A;
+  --gray-09: #F2F3F5;
+  --gray-10: #D5D6DC;
+  --gray-11: #E7E8EA;
+  --gray-12: #7A7A7A;
+  --gray-13: #EEEEEE;
+  --gray-14: #D9D6CE;
+  --gray-16: #FDFCFC;
+  --gray-17: rgba(3, 3, 6, 0.88);
+  /* недостающие ступени серого (свободные слоты нумерации Kurs) */
+  --gray-05: #444444;
+  --gray-06: #54545C;
+  --gray-07: #86868E;
+  --gray-08: #9C9CA3;
+  --gray-15: #AEAEB6;
+  --gray-18: #C9C9CF;
+  --gray-19: #F8F8F9;
+  --gray-20: rgba(20, 20, 45, 0.35);
+  --gray-23: #6E6E76;
+  --gray-21: rgba(255, 255, 255, 0.72);
+  --gray-22: rgba(255, 255, 255, 0.92);
+  --gray-24: rgba(10, 10, 14, 0.55); /* глубокое затемнение спотлайта тура (T-0132) */
+  --red-01: #EF3124;
+  --red-02: #FC493D;
+  --red-04: #EC2D20;
+  --red-05: #F2968D; /* пастельная роза — гало активного композера (E09) */
+  --red-08: #F3EAEB;
+  --red-10: rgba(239, 49, 36, 0.2);
+  --red-11: #E8281B;
+  --red-13: #FFEBEB;
+  --blue-01: #2A77EF;
+  --blue-08: #EFF4FF;
+  --blue-09: #E6EEFF;
+  --blue-12: #E7E9F4;
+  --green-01: #39A373;
+  --green-08: #EAF4EF;
+  --green-10: rgba(57, 163, 115, 0.25);
+  --yellow-01: #A06B00;
+  --yellow-08: #FFF6D6;
+  --beige-01: #F4ECE0;
+  --beige-02: #D2B488;
+
+  /* app aliases */
+  --bg: var(--gray-16);
+  --card: var(--gray-01);
+  --ink: var(--gray-02);
+  --muted: var(--gray-12);
+  --line: var(--gray-11);
+  --hover: var(--gray-09);
+  --active: var(--gray-13);
+  --accent: var(--red-01);
+  --accent-hover: var(--red-11);
+  --dark: var(--gray-02);
+  --dark-2: var(--gray-03);
+  /* текстовая шкала */
+  --ink-2: var(--gray-05);
+  --ink-3: var(--gray-06);
+  --ink-hover: var(--gray-04);
+  --muted-2: var(--gray-07);
+  --muted-strong: var(--gray-23); /* приглушённый, но читаемый: ≥4.5:1 на белом */
+  --faint: var(--gray-08);
+  --disabled: var(--gray-15);
+  --ghost: var(--gray-18);
+  --on-dark: var(--gray-01);
+  --on-dark-2: var(--gray-09);
+  /* поверхности и линии */
+  --canvas: var(--gray-09); /* серый холст под плавающими окнами */
+  --line-2: var(--gray-10);
+  --line-soft: var(--gray-13);
+  --hover-2: var(--gray-19);
+  --overlay: var(--gray-20);
+  --overlay-strong: var(--gray-24); /* спотлайт тура: затемнение вокруг выреза */
+  --glass: var(--gray-21);
+  --glass-strong: var(--gray-22);
+  /* акцентные производные */
+  --accent-bg: var(--red-13);
+  --accent-line: var(--red-10);
+  --accent-glow: color-mix(in srgb, var(--red-05) 55%, transparent);
+  /* статусные */
+  --ok: var(--green-01);
+  --ok-bg: var(--green-08);
+  --ok-line: var(--green-10);
+  --warn: var(--yellow-01);
+  --warn-bg: var(--yellow-08);
+  --danger: var(--red-01);
+  --danger-bg: var(--red-13);
+  /* информационные */
+  --info-bg: var(--blue-08);
+  --info-bg-strong: var(--blue-09);
+  /* тип-иконки: цветная плашка + белый глиф (файлы и акты) */
+  --doc-ico-docx: var(--blue-01);
+  --doc-ico-pdf: var(--red-02);
+  --doc-ico-codex: var(--blue-01);
+  --doc-ico-law: var(--gray-23);
+  --doc-ico-court: var(--beige-02);
+  /* legacy alias kept for existing components */
+  --user-bubble: var(--gray-09);
+  /* Alfa Kurs radius scale */
+  --r-row: 8px;
+  --r-btn: 8px;
+  --r-card: 16px;
+  --r-panel: 12px;
+  --r-chip: 6px;
+  --r-micro: 2px;
+  --r-pill: 999px;
+  --r-composer: 20px;
+  --r-composer-outer: 21px;
+  /* тени: 1/2 — покой/подъём поверхностей, 3/4 — поповеры/модалки;
+     glass/window/composer — фирменные составные */
+  --shadow-1: 0 1px 2px rgba(20, 20, 30, 0.06), 0 2px 6px rgba(20, 20, 30, 0.04);
+  --shadow-2: 0 1px 3px rgba(20, 20, 30, 0.1), 0 3px 9px rgba(20, 20, 30, 0.07);
+  --shadow-3: 0 12px 34px rgba(20, 20, 45, 0.14);
+  --shadow-4: 0 16px 44px rgba(20, 20, 45, 0.18);
+  --shadow-glass: 0 8px 24px rgba(20, 20, 45, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  --shadow-window: 0 1px 2px rgba(22, 22, 28, 0.04), 0 14px 38px -18px rgba(22, 22, 32, 0.22);
+  --shadow-composer: 0 4px 18px rgba(3, 3, 6, 0.06);
+  /* fonts */
+  --font-ui: "Alfa Interface Sans", -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Styrene A LC Black", "Alfa Interface Sans", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* layout */
+  --col: 768px;
+  font-family: var(--font-ui);
+}

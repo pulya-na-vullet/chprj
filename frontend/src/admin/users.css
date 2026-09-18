@@ -1,0 +1,27 @@
+/* Users tab (T-0022/T-0026) — new rules land in feature files and are pulled
+   in via @import, same recipe as the chat app's styles.css. .switch-disabled
+   stays for the shared .switch component (agent settings tab). */
+.switch-disabled { opacity: 0.5; cursor: default; }
+
+/* Row actions as explicit bordered buttons (client request, T-0026): neutral
+   by default, danger text only for the destructive «Заблокировать». */
+.btn-row { background: var(--card); border: 1px solid var(--line); border-radius: var(--r-btn);
+  color: var(--ink-2); font: inherit; font-size: 13px; padding: 5px 10px; cursor: pointer;
+  white-space: nowrap; }
+.btn-row:hover:not(:disabled) { background: var(--hover); }
+.btn-row:disabled { opacity: 0.4; cursor: default; }
+.btn-row-danger { color: var(--danger); border-color: var(--accent-line); }
+.btn-row-danger:hover:not(:disabled) { background: var(--danger-bg); }
+
+/* Operator-action confirmation (password reset / block, T-0035). */
+.modal-text { font-size: 13px; color: var(--ink-3); margin: 0 0 4px; }
+
+/* Success feedback after an operator action completes. */
+.users-notice { color: var(--ok); background: var(--ok-bg); border: 1px solid var(--ok-line);
+  border-radius: var(--r-btn); font-size: 13px; padding: 8px 12px; margin-bottom: 12px; }
+
+/* Loading skeleton for the users table (DESIGN.md: skeletons, not spinners). */
+.users-skel { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+.users-skel-row { height: 40px; border-radius: var(--r-btn); background: var(--hover);
+  animation: users-skel-pulse 1.2s ease-in-out infinite; }
+@keyframes users-skel-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.9; } }

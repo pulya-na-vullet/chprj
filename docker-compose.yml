@@ -1,0 +1,23 @@
+name: neurolegal
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: neurolegal-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: neurolegal
+      POSTGRES_PASSWORD: neurolegal
+      POSTGRES_DB: neurolegal
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - neurolegal-pg-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U neurolegal -d neurolegal"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  neurolegal-pg-data:

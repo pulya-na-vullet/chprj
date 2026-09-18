@@ -1,0 +1,233 @@
+/* ===== Проверка документа 2.0 (T-0010): карточка хода проверки в чате
+   (rvc-*) + слайд-панель отчёта о рисках (rvp-*). Перенесено из финального
+   hi-fi макета v11 (.superpowers/brainstorm/49630-1784360804/content/
+   report-panel-hifi-v11.html), значения — токенами tokens.css. */
+
+/* --- карточка хода проверки (ReviewRunCard) --- */
+.rvc-run-card { max-width: 400px; border: 1px solid var(--line); border-radius: var(--r-panel);
+  padding: 12px 14px; }
+.rvc-run-card-t { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.rvc-run-card-s { display: flex; align-items: center; gap: 8px; margin-top: 6px;
+  font-size: 12px; color: var(--muted-strong); }
+.rvc-run-card-time { white-space: nowrap; }
+
+/* чип файла — общий для карточки хода проверки и панели отчёта (DocChip) */
+.rvc-chip { display: inline-flex; align-items: flex-start; gap: 6px; max-width: 100%;
+  border: 1px solid var(--line); border-radius: var(--r-panel); padding: 3px 10px 3px 6px;
+  background: var(--card); font-size: 12px; color: var(--ink-2);
+  margin-left: -7px; /* левый край тип-иконки = левый край заголовка над чипом */ }
+/* T-0052: длинное имя не переносится посреди токена — обрезается многоточием
+   (полное имя остаётся в title чипа). min-width:0 — чтобы ellipsis работал
+   внутри inline-flex чипа. */
+.rvc-chip-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  min-width: 0; line-height: 1.4; padding-top: 1px; }
+
+.rvc-run-progress { margin-top: 10px; }
+.rvc-run-progress-line { font-size: 12px; color: var(--ink-3); margin-bottom: 6px; }
+.rvc-progress-track { height: 2px; background: var(--line); border-radius: var(--r-micro); overflow: hidden; }
+/* плавный прогресс через transform (не width): без layout-пересчёта */
+.rvc-progress-fill { width: 100%; height: 100%; background: var(--accent);
+  transform-origin: left; transition: transform 0.2s ease; }
+
+/* уровни риска: слово — носитель смысла, точка — цветовой усилитель;
+   низкий = кольцо, различимо и без цвета (общее для карточки и панели) */
+.rvc-lvl, .rvp-lvl { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--ink-3); }
+.rvc-dot { width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto; }
+.rvc-dot-high { background: var(--danger); }
+/* T-0052 (WCAG 1.4.1): средний различим и без цвета — полузаливка, в отличие
+   от полного круга высокого и тонкого кольца низкого. */
+.rvc-dot-medium { background: linear-gradient(90deg, var(--muted) 50%, transparent 50%);
+  border: 1.5px solid var(--muted); }
+.rvc-dot-low { background: none; border: 1.5px solid var(--muted-strong); }
+
+.rvc-run-counts { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+
+/* --- вопрос роли (AskBlock, T-0046): агент приостанавливает risk_review,
+   спрашивая «кто вы по этому договору» — рендерится под content сообщения
+   (сам текст вопроса не дублируется, он уже в content). Перенесено из
+   .superpowers/brainstorm/49630-1784360804/content/review-entry-dialog.html
+   (.ask-*), классы — под префиксом rvp- (общий с панелью отчёта). */
+.rvp-ask { margin-top: 10px; }
+.rvp-ask-opts { display: flex; flex-wrap: wrap; gap: 8px; }
+.rvp-ask-opt { font: inherit; font-size: 13px; font-weight: 500; padding: 6px 12px;
+  border: 1px solid var(--line-2); border-radius: var(--r-pill); background: none; color: var(--ink);
+  cursor: pointer; transition: border-color 0.12s ease, background 0.12s ease; }
+.rvp-ask-opt:hover { border-color: var(--ink); background: var(--hover-2); }
+.rvp-ask-opt:focus-visible { outline: 1.5px solid var(--ink); outline-offset: 1px; }
+.rvp-ask-opt:disabled { cursor: default; opacity: 0.5; }
+.rvp-ask-opt:disabled:hover { border-color: var(--line-2); background: none; }
+.rvp-ask-free { border-style: dashed; color: var(--muted-strong); }
+.rvp-ask-note { margin-top: 8px; font-size: 12px; color: var(--muted-strong); }
+
+.rvc-run-open { margin-top: 10px; }
+.rvc-run-open button, .rvc-retry-btn { display: inline-flex; align-items: center; gap: 7px; font: inherit;
+  font-size: 13px; font-weight: 500; padding: 6px 12px; border: 1px solid var(--line-2);
+  border-radius: var(--r-row); background: none; color: var(--ink); cursor: pointer;
+  transition: border-color 0.12s ease, background 0.12s ease; }
+.rvc-run-open button:hover, .rvc-retry-btn:hover { border-color: var(--ink); background: var(--hover-2); }
+.rvc-run-open button:focus-visible, .rvc-retry-btn:focus-visible {
+  outline: 1.5px solid var(--ink); outline-offset: 1px; }
+.rvc-run-error { margin-top: 8px; font-size: 13px; color: var(--ink-3); }
+.rvc-retry-btn { margin-top: 10px; }
+
+/* --- панель отчёта (ReviewPanel) --- */
+/* геометрия — паттерн files-panel (Codex-reader, files.css): слайд-панель
+   absolute справа внутри .chat-win (position: relative уже на .chat-win,
+   см. chat.css). ReviewPanel монтируется условно (без открыт/закрыт
+   тумблера в отличие от files-panel), поэтому статично несёт rvp-open —
+   базовое .rvp-panel остаётся скрытым (совместимо, если панель когда-нибудь
+   станет постоянно смонтированной ради анимации закрытия); въезд при
+   монтировании даёт @starting-style. */
+.rvp-panel {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 56%; min-width: 380px; z-index: 20;
+  background: var(--card); border-left: 1px solid var(--line-soft);
+  border-radius: 0 var(--r-card) var(--r-card) 0;
+  box-shadow: var(--shadow-window);
+  display: flex; flex-direction: column;
+  transform: translateX(102%);
+  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1);
+}
+.rvp-panel.rvp-open { transform: translateX(0); }
+@starting-style {
+  .rvp-panel.rvp-open { transform: translateX(102%); }
+}
+/* Программный фокус контейнера панели (tabIndex=-1) — без браузерной синей
+   обводки: это не интерактивный контрол (T-0052, замечание клиента). */
+.rvp-panel:focus { outline: none; }
+
+/* T-0052 (P0 ревью эпика): в разделе «Проверки» геометрию и слайд задаёт
+   хост .files-panel (56% окна + translateX-анимация) — собственные 56%
+   панели давали двойное вложение: отчёт в 417px и мёртвая полоса слева,
+   перехватывающая клики. Внутри хоста панель просто заполняет его. */
+.files-panel .rvp-panel { position: static; width: 100%; min-width: 0;
+  height: 100%; transform: none; transition: none; border-left: 0;
+  box-shadow: none; border-radius: inherit; }
+
+.rvp-head { display: flex; align-items: flex-start; gap: 8px; padding: 14px 20px 12px;
+  border-bottom: 1px solid var(--line-soft); }
+.rvp-titles { flex: 1; min-width: 0; }
+.rvp-title { font-size: 13px; font-weight: 700;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rvp-time { color: var(--muted-strong); font-weight: 400; font-size: 12px; }
+.rvp-sub { margin-top: 6px; display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--muted-strong); min-width: 0; }
+
+.rvp-body { flex: 1; overflow: auto; padding: 6px 20px 20px; }
+/* заголовки секций панели: не капс — 14px/600, чуть плотнее межбуквенно */
+.rvp-sec-h { font-size: 14px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em;
+  margin: 18px 0 6px; }
+.rvp-sec-h small { font-size: 12px; font-weight: 400; color: var(--muted-strong); margin-left: 8px; }
+
+.rvp-summary { padding: 14px 0 2px; font-size: 13px; line-height: 1.6; color: var(--ink-2); max-width: 62ch; }
+
+.rvp-risk { border-bottom: 1px solid var(--line-soft); }
+.rvp-risk-row { display: flex; align-items: center; gap: 10px; padding: 12px 2px; cursor: pointer;
+  background: none; border: 0; width: 100%; font: inherit; text-align: left; border-radius: var(--r-row); }
+.rvp-risk-row:hover { background: var(--hover-2); }
+.rvp-risk-row:focus-visible { outline: 1.5px solid var(--ink); outline-offset: 1px; }
+.rvp-lvl-tag { flex: 0 0 auto; width: 76px; }
+.rvp-risk-title { font-size: 13px; font-weight: 600; color: var(--ink); flex: 1; min-width: 0; }
+.rvp-verdict { font-size: 11px; color: var(--muted-strong); border: 1px solid var(--line);
+  border-radius: var(--r-pill); padding: 1px 8px; flex: 0 0 auto; cursor: help; }
+/* SR-only текст пояснения вердикта (aria-describedby у .rvp-risk-row) —
+   стандартный visually-hidden паттерн */
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; }
+.rvp-risk-ref { font-size: 12px; color: var(--muted-strong); font-variant-numeric: tabular-nums;
+  flex: 0 0 auto; width: 44px; text-align: right; }
+/* индикатор раскрытости строки (перенос из Задачи 4) */
+.rvp-chev { color: var(--muted-strong); flex: 0 0 auto;
+  transition: transform 160ms cubic-bezier(0.2, 0, 0, 1); }
+.rvp-risk.open .rvp-chev { transform: rotate(90deg); }
+
+.rvp-risk-body { padding: 2px 2px 16px 20px; }
+/* узаконено: типографский blockquote выдержки из документа — нейтральный
+   hairline (--line), не цветная статус-полоса, в которую целит бан side-tab */
+/* impeccable-disable-next-line side-tab -- нейтральная типографская цитата, узаконено (см. выше) */
+.rvp-quote { margin: 4px 0 10px; padding: 10px 12px; border-left: 2px solid var(--line);
+  background: var(--bg); font-family: var(--font-mono); font-size: 12px; color: var(--ink-2);
+  line-height: 1.5; }
+.rvp-quote-ref { display: block; color: var(--muted-strong); font-size: 11px; font-family: var(--font-ui);
+  margin-bottom: 4px; }
+.rvp-risk-text { font-size: 13px; color: var(--ink-2); line-height: 1.55; margin-bottom: 10px; }
+.rvp-nobasis { font-size: 12px; color: var(--muted-strong); font-style: italic; margin-bottom: 10px; }
+
+/* рекомендация: спокойный блок с обводкой, без ложного hover */
+.rvp-reco { border: 1px solid var(--line-2); border-radius: var(--r-row); padding: 10px 12px;
+  margin-bottom: 10px; }
+.rvp-reco-label { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+.rvp-reco p { font-size: 13px; color: var(--ink-2); line-height: 1.55; }
+
+.rvp-cites { font-size: 13px; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+/* строка тихих действий риска (сегодня — «Копировать риск»; Задача 5 добавит
+   «Обсудить в чате» рядом как ещё один .rvp-quiet-btn) */
+.rvp-next { display: flex; justify-content: flex-end; gap: 4px; margin-top: 6px; }
+.rvp-quiet-btn { font: inherit; font-size: 12px; color: var(--muted-strong); background: none; border: 0;
+  cursor: pointer; padding: 3px 6px; border-radius: var(--r-chip); }
+.rvp-quiet-btn:hover { background: var(--hover-2); color: var(--ink-2); }
+.rvp-quiet-btn:focus-visible { outline: 1.5px solid var(--ink); outline-offset: 1px; }
+
+.rvp-cov-row { display: flex; align-items: center; gap: 10px; padding: 7px 2px;
+  border-bottom: 1px solid var(--line-soft); font-size: 13px; }
+.rvp-cov-row:last-of-type { border-bottom: 0; }
+.rvp-cov-name { color: var(--ink-2); flex: 1; min-width: 0; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap; }
+.rvp-cov-status { flex: 0 0 auto; font-size: 12px; color: var(--muted-strong); }
+.rvp-cov-status-ok::before { content: "\2713 "; color: var(--ok); }
+
+/* низ панели (Задача 5: «Обсудить риски в чате» / «Копировать отчёт») */
+.rvp-actions { display: flex; gap: 8px; margin-top: 18px; padding-top: 14px;
+  border-top: 1px solid var(--line-soft); }
+.rvp-btn { display: inline-flex; align-items: center; gap: 7px; font: inherit; font-size: 13px;
+  font-weight: 500; padding: 6px 12px; border: 1px solid var(--line-2); border-radius: var(--r-row);
+  background: none; color: var(--ink); cursor: pointer; transition: border-color 0.12s ease, background 0.12s ease; }
+.rvp-btn:hover { border-color: var(--ink); background: var(--hover-2); }
+.rvp-btn:focus-visible { outline: 1.5px solid var(--ink); outline-offset: 1px; }
+
+.rvp-disclaimer { font-size: 11px; color: var(--muted-strong); line-height: 1.5; margin-top: 14px; }
+
+/* Меню «Скачать» (T-0049; радиус меню — --r-panel по DESIGN.md, T-0052) */
+.rvp-dl-menu { min-width: 200px; padding: 6px; display: flex; flex-direction: column;
+  background: var(--card); border: 1px solid var(--line-soft);
+  border-radius: var(--r-panel); box-shadow: var(--shadow-3); }
+.rvp-dl-item { display: block; width: 100%; padding: 8px 10px; font: inherit;
+  font-size: 13px; color: var(--ink-2); text-align: left; text-decoration: none;
+  background: none; border: 0; border-radius: var(--r-row); cursor: pointer; }
+.rvp-dl-item:hover { background: var(--hover); color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rvc-progress-fill, .rvc-run-open button, .rvc-retry-btn, .rvp-panel, .rvp-btn, .rvp-quiet-btn, .rvp-chev,
+  .rvp-ask-opt {
+    transition: none;
+  }
+}
+
+/* Печать в PDF (T-0049): видима только панель, развёрнутая на всю страницу.
+   visibility-маска вместо display:none — панель вложена глубоко в дерево. */
+@media print {
+  body.rvp-printing * { visibility: hidden; overflow: visible !important; }
+  body.rvp-printing .rvp-panel,
+  body.rvp-printing .rvp-panel * { visibility: visible; }
+  /* Якорь absolute-панели должен стать страницей, а не колонкой: в цепочке
+     предков панели есть позиционированные (.chat-win в чате; .files-win и
+     .files-panel в разделе «Проверки») — нейтрализуем их, иначе печать
+     занимает 56% листа. transition: none обязателен: transform уходит в
+     none через анимацию, а промежуточная identity-матрица тоже создаёт
+     containing block. overflow: visible выше — снятие клиппинга цепочки. */
+  body.rvp-printing .chat-win,
+  body.rvp-printing .files-win,
+  body.rvp-printing .files-panel { position: static; transform: none;
+    transition: none; width: auto; min-width: 0; border: 0; box-shadow: none; }
+  body.rvp-printing .rvp-panel { position: absolute; inset: 0; width: 100%;
+    min-width: 0; height: auto; overflow: visible; border: 0; box-shadow: none;
+    transform: none; }
+  body.rvp-printing .rvp-body { overflow: visible; }
+  /* интерактив в печати не нужен. Кнопка «Закрыть» — через обёртку
+     .rvp-head-close, не через класс core-ds (см. ReviewPanel.tsx). */
+  body.rvp-printing .rvp-head-close,
+  body.rvp-printing .rvp-head-dl,
+  body.rvp-printing .rvp-head-copy,
+  body.rvp-printing .rvp-chev,
+  body.rvp-printing .rvp-next,
+  body.rvp-printing .rvp-actions { display: none; }
+}

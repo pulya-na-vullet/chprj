@@ -1,0 +1,219 @@
+/* ===== Файлы: таблица библиотеки + слайд-панель читалки =====
+   Язык окна чата: белое окно без шапки на сером холсте; строка сверху —
+   поиск, при отмеченных документах превращается в «спросить по выбранным». */
+.files {
+  flex: 1; min-width: 0; display: flex; padding: 14px 18px 18px 4px;
+}
+.files-win {
+  flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden;
+  background: var(--card); border: 1px solid var(--line-soft); border-radius: var(--r-card);
+  box-shadow: var(--shadow-window); position: relative;
+}
+.files-win.files-drag { outline: 1.5px dashed var(--ink-3); outline-offset: -8px; }
+.files-drag-note {
+  position: absolute; left: 0; right: 0; bottom: 14px; text-align: center;
+  font-size: 12px; color: var(--muted); pointer-events: none;
+}
+
+/* верхний бар окна */
+.files-bar { display: flex; align-items: center; gap: 8px; padding: 18px 24px 6px; }
+.files-title { font-size: 13px; font-weight: 500; }
+.files-count { font-size: 13px; color: var(--faint); }
+.files-bar-sp { flex: 1; }
+.files-input { display: none; }
+.files-btn {
+  display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 12.5px;
+  padding: 5px 10px; border: 1px solid var(--line-soft); border-radius: var(--r-row);
+  background: none; color: var(--ink); cursor: pointer; text-decoration: none;
+  transition: background 120ms ease;
+}
+.files-btn:hover:not(:disabled) { background: var(--hover-2); }
+.files-btn:disabled { opacity: 0.5; cursor: default; }
+
+/* двухрежимная строка: поиск ⇄ вопрос по выбранным */
+.files-ask {
+  display: flex; align-items: center; gap: 10px; margin: 10px 24px 12px;
+  min-height: 56px; padding: 10px 12px 10px 16px;
+  border: 1px solid var(--line-soft); border-radius: var(--r-composer);
+  color: var(--faint);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+.files-ask input {
+  border: 0; outline: none; background: none; font: inherit; font-size: 13.5px;
+  flex: 1; color: var(--ink);
+}
+.files-ask-on { border-color: var(--ink); box-shadow: var(--shadow-1); }
+.files-strip-note { font-size: 12px; color: var(--muted); margin: -4px 26px 10px; }
+
+/* таблица документов */
+.files-table { flex: 1; min-height: 0; overflow: auto; padding: 0 24px 24px; }
+.files-thead, .files-row {
+  display: grid; grid-template-columns: 14px minmax(180px,2fr) minmax(200px,2.4fr) 110px 78px 104px 28px;
+  gap: 14px; align-items: center; padding: 10px;
+}
+.files-thead {
+  font-size: 11.5px; color: var(--faint); padding: 8px 10px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.files-row { border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background 120ms ease; }
+.files-row:hover { background: var(--hover-2); }
+.files-row-on { background: var(--hover); }
+.files-tnote { color: var(--faint); font-size: 12.5px; padding: 14px 10px; }
+
+.files-check {
+  width: 15px; height: 15px; border: 1.5px solid var(--line-2); border-radius: var(--r-micro);
+  cursor: pointer; position: relative; flex: 0 0 auto;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+.files-check-on { background: var(--ink); border-color: var(--ink); }
+.files-check-on::after {
+  content: ""; position: absolute; left: 4px; top: 1px; width: 4px; height: 8px;
+  border: solid var(--on-dark); border-width: 0 1.5px 1.5px 0; transform: rotate(43deg);
+}
+.files-check-off { opacity: 0.35; cursor: default; }
+
+.files-doccell { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.file-ico { flex: 0 0 auto; display: block; }
+.files-name { font-size: 13px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.files-cell { font-size: 12.5px; color: var(--muted-strong); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.files-cell-size { color: var(--faint); }
+
+/* статус документа — пилюля (T-0148) */
+.st-pill {
+  display: inline-flex; align-items: center; gap: 5px; height: 20px; padding: 0 9px;
+  border-radius: var(--r-pill); font-size: 11.5px; white-space: nowrap;
+}
+.st-ok { background: var(--ok-bg); color: var(--ok); }
+.st-run { background: var(--warn-bg); color: var(--warn); }
+.st-err { background: var(--danger-bg); color: var(--danger); }
+.st-ring {
+  width: 9px; height: 9px; border-radius: 50%; flex: none;
+  border: 1.6px solid currentColor; border-top-color: transparent;
+  animation: st-spin 800ms linear infinite;
+}
+@keyframes st-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .st-ring { animation: none; } }
+
+.files-sum { font-size: 12.5px; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.files-sum-note { color: var(--muted); }
+
+/* пустая библиотека */
+.files-empty {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 54px 20px; color: var(--faint); gap: 8px;
+}
+.files-empty-icon {
+  width: 46px; height: 46px; border-radius: var(--r-panel); display: flex; align-items: center;
+  justify-content: center; border: 1px dashed var(--line-soft); color: var(--faint);
+}
+.files-empty-title { font-size: 14px; color: var(--ink); }
+.files-empty-text { font-size: 12.5px; }
+
+/* слайд-панель читалки (Codex-паттерн) */
+.files-panel {
+  position: absolute; top: 0; right: 0; bottom: 0; width: 56%; min-width: 320px; z-index: 20;
+  background: var(--card); border-left: 1px solid var(--line-soft);
+  box-shadow: var(--shadow-window); border-radius: 0 var(--r-card) var(--r-card) 0;
+  display: flex; flex-direction: column;
+  transform: translateX(102%);
+  transition: transform 220ms cubic-bezier(0.2, 0, 0, 1);
+}
+.files-panel-open { transform: translateX(0); }
+.files-reader-head {
+  display: flex; align-items: center; gap: 10px; padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.files-reader-name {
+  font-size: 13.5px; color: var(--ink); font-weight: 600;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; flex: 1;
+}
+.files-reader-actions { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+
+/* «⋯»-меню читалки — язык doc-menu композера: solid --card, panel-радиус */
+.files-menu-wrap { position: relative; display: flex; }
+.files-menu {
+  position: absolute; top: calc(100% + 6px); right: 0; min-width: 160px;
+  background: var(--card); border: 1px solid var(--line-soft); border-radius: var(--r-panel);
+  box-shadow: var(--shadow-3); padding: 6px; z-index: 20;
+}
+/* I4 (финальное ревью): у строки/карточки возле нижнего края скролл-
+   контейнера (.files-table / .files-grid, оба overflow:auto) меню вниз не
+   влезает и обрезается — флип вверх по решению DocMenu (getBoundingClientRect). */
+.files-menu-up { top: auto; bottom: calc(100% + 6px); }
+.files-menu-item {
+  display: block; width: 100%; text-align: left; background: none; border: 0;
+  border-radius: var(--r-row); padding: 8px 10px; font: inherit; font-size: 13px;
+  color: var(--ink-2); cursor: pointer; text-decoration: none;
+}
+.files-menu-item:hover { background: var(--hover); color: var(--ink); }
+.files-menu-sep { height: 1px; background: var(--line-soft); margin: 5px 7px; }
+.files-menu-item-danger { color: var(--danger); }
+.files-menu-item-off { color: var(--faint); cursor: default; }
+.files-menu-item-off:hover { background: none; color: var(--faint); }
+
+.files-reader-body { flex: 1; min-height: 0; overflow-y: auto; }
+.files-pdf { width: 100%; height: 100%; border: 0; display: block; }
+.files-doctext { padding: 14px 20px 24px; max-width: 72ch; font-size: 13.5px; line-height: 1.6; color: var(--ink); }
+.files-doctext p { margin: 0 0 8px; }
+.files-section { margin-bottom: 18px; }
+.files-section-h { font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+
+/* текст ошибки в теле ConfirmDialog (модалка живёт в портале вне .files) */
+.confirm-dialog-error { color: var(--accent); font-size: 13px; margin-top: 10px; }
+
+/* переключатель вида (T-0149) */
+.files-seg { display: inline-flex; border: 1px solid var(--line-soft); border-radius: var(--r-panel); padding: 2px; gap: 2px; }
+.files-seg button {
+  width: 28px; height: 24px; border: 0; background: none; border-radius: var(--r-btn);
+  display: grid; place-items: center; color: var(--faint); cursor: pointer;
+}
+.files-seg button:hover { color: var(--ink-3); }
+.files-seg .files-seg-on { background: var(--hover); color: var(--ink); }
+
+/* плитка */
+.files-grid {
+  flex: 1; min-height: 0; overflow: auto; padding: 4px 24px 24px;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 12px;
+  align-content: start;
+}
+.file-card {
+  border: 1px solid var(--line-soft); border-radius: var(--r-card); padding: 14px;
+  display: flex; flex-direction: column; gap: 10px; min-height: 132px; cursor: pointer;
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.file-card:hover { border-color: var(--line-2); }
+.file-card-on { background: var(--hover); }
+.file-card-top { display: flex; align-items: flex-start; gap: 10px; }
+.file-card-name {
+  font-size: 13px; line-height: 1.35; color: var(--ink); flex: 1; min-width: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.file-card-top .files-row-menu { margin-left: auto; }
+.file-card-sum {
+  font-size: 12px; line-height: 1.4; color: var(--ink-3); flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.file-card-sum-note { color: var(--muted); }
+.file-card-foot { display: flex; align-items: center; gap: 8px; }
+.file-card-dim { font-size: 11.5px; color: var(--faint); font-variant-numeric: tabular-nums; }
+/* I3 (финальное ревью): пустой результат поиска в плитке — тот же текст, что
+   в таблице, растянутый на всю ширину сетки, а не в одну узкую ячейку. */
+.files-grid .files-tnote { grid-column: 1 / -1; }
+/* Minor 12 (финальное ревью): скелет загрузки был только в таблице — во время
+   аплоада в плитке ничего не появлялось. */
+.file-card-skel {
+  border: 1px solid var(--line-soft); border-radius: var(--r-card); min-height: 132px;
+  background: linear-gradient(90deg, var(--hover) 25%, var(--line-soft) 37%, var(--hover) 63%);
+  background-size: 400% 100%; animation: src-shimmer 1.4s ease infinite;
+}
+@media (prefers-reduced-motion: reduce) { .file-card, .file-card-skel { animation: none; transition: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .files-btn, .files-row, .files-check, .files-ask, .files-panel { transition: none; }
+}
+@media (max-width: 860px) {
+  .files-thead, .files-row { grid-template-columns: 14px minmax(140px,1fr) 110px 28px; }
+  .files-thead span:nth-child(3), .files-thead span:nth-child(5), .files-thead span:nth-child(6),
+  .files-row .files-sum, .files-row .files-cell { display: none; }
+  .files-panel { width: 100%; border-radius: var(--r-card); }
+}

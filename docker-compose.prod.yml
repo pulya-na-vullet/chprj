@@ -1,0 +1,108 @@
+name: neurolegal
+
+# Все четыре сервиса работают из ОДНОГО образа. Сборка объявлена только у
+# agent: если поставить build в этот якорь, `docker compose build` запустит
+# четыре сборки параллельно, и они подерутся за один тег — экспорт падает с
+# `image "neurolegal:local": already exists`.
+x-app: &app
+  image: neurolegal:${TAG:-local}
+  env_file: .env.prod
+  restart: unless-stopped
+  logging:
+    driver: json-file
+    options:
+      max-size: "10m"
+      max-file: "3"
+
+services:
+  agent:
+    <<: *app
+    build:
+      context: .
+    command: >
+      uvicorn neurolegal.agent.api.app:app --host 0.0.0.0 --port 8000
+      --forwarded-allow-ips=*
+    volumes:
+      - neurolegal-data:/app/data
+    healthcheck:
+      # Только /healthz: /acts закрыт авторизацией и без сессии отдаёт 401,
+      # а healthcheck залогиниться не может. Живую связь с БД доказывает
+      # healthcheck rag — он ходит в неё внутри своего /healthz.
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=5)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  rag:
+    <<: *app
+    command: uvicorn neurolegal.rag.api.app:app --host 0.0.0.0 --port 8001
+    volumes:
+      - neurolegal-data:/app/data
+      # corpus/manifest.yaml — источник истины по составу корпуса для админки
+      # (список, матрица статусов, правка записей). В образе его нет: каталог
+      # corpus исключён из контекста сборки, а сами .docx живут в S3. Монтируем
+      # с хоста, где он появляется из чекаута тега. Без этого тома все экраны
+      # админки отдают 500 (FileNotFoundError), хотя поиск работает: данные
+      # лежат в БД.
+      - ./corpus:/app/corpus
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/healthz', timeout=5)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  documents:
+    <<: *app
+    command: uvicorn neurolegal.documents.api.app:app --host 0.0.0.0 --port 8002
+    volumes:
+      # rus.traineddata провижинится на хосте один раз (см. README, раздел
+      # «Деплой»): в образ он не качается, чтобы сборка не зависела от
+      # github.com. Без этого тома preflight хаба не даст сервису подняться.
+      - ./tessdata:/opt/tessdata:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8002/healthz', timeout=5)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  # E20: сервис шаблонов. Наружу не публикуется (браузер с :8003 не говорит):
+  # к нему ходят только агент (публичное API) и RAG-прокси (админ-CRUD за
+  # X-Internal-Token). На старте fail-fast без токена при
+  # NEUROLEGAL_REQUIRE_INTERNAL_TOKEN=true — как у документс-хаба.
+  templates:
+    <<: *app
+    command: uvicorn neurolegal.templates.api.app:app --host 0.0.0.0 --port 8003
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8003/healthz', timeout=5)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  caddy:
+    image: caddy:2-alpine
+    env_file: .env.prod
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - agent
+      - rag
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  neurolegal-data:
+  caddy_data:
+  caddy_config:

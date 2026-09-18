@@ -1,0 +1,10 @@
+{
+  "key": "jurai",
+  "name": "neurolegal",
+  "description": "Юридический ИИ-ассистент по праву РФ: RAG-поиск с пиновыми цитатами, чат-агент, проверка договоров и документов сервиса на риски",
+  "framework": "Python",
+  "packageManager": "uv",
+  "port": 8710,
+  "command": "make dev",
+  "stopCommand": "make down"
+}
